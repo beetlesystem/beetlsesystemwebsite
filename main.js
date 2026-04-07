@@ -178,6 +178,20 @@ document.addEventListener('DOMContentLoaded', () => {
         sectionObserver.observe(sec);
     });
 
+    // --- Per-Element Direction Reveal Observer ---
+    const elementObserver = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in-view');
+                obs.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
+
+    document.querySelectorAll(
+        '.reveal-from-left, .reveal-from-right, .reveal-from-bottom, .reveal-scale-in, .line-grow'
+    ).forEach(el => elementObserver.observe(el));
+
     // --- Loader & Initial Hero ---
     const loader = document.getElementById('loader');
     window.addEventListener('load', () => {
