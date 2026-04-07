@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollProgress = document.getElementById('scroll-progress');
     const navToggle = document.getElementById('nav-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
+    const backToTop = document.getElementById('back-to-top');
 
     // --- Mobile Menu Toggle ---
     let scrollY = 0;
@@ -34,13 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
         window.scrollTo(0, scrollY);
     };
 
-    navToggle.addEventListener('click', () => {
-        mobileMenu.classList.contains('active') ? closeMenu() : openMenu();
-    });
+    if (navToggle) {
+        navToggle.addEventListener('click', () => {
+            mobileMenu.classList.contains('active') ? closeMenu() : openMenu();
+        });
+    }
 
-    document.getElementById('mobile-close').addEventListener('click', closeMenu);
+    const mobileClose = document.getElementById('mobile-close');
+    if (mobileClose) mobileClose.addEventListener('click', closeMenu);
 
-    // Close mobile menu on link click
     document.querySelectorAll('.mobile-links a').forEach(link => {
         link.addEventListener('click', closeMenu);
     });
@@ -48,14 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Custom Cursor ---
     document.addEventListener('mousemove', (e) => {
         const { clientX: x, clientY: y } = e;
-        cursor.style.left = `${x}px`;
-        cursor.style.top = `${y}px`;
-        follower.style.left = `${x}px`;
-        follower.style.top = `${y}px`;
+        if (cursor) {
+            cursor.style.left = `${x}px`;
+            cursor.style.top = `${y}px`;
+        }
+        if (follower) {
+            follower.style.left = `${x}px`;
+            follower.style.top = `${y}px`;
+        }
     });
 
     const addCursorHover = () => {
-        const hoverElements = document.querySelectorAll('a, button, .project-item, .service-card');
+        const hoverElements = document.querySelectorAll('a, button, .project-item, .service-card, .social-icon, .back-to-top');
         hoverElements.forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
             el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
@@ -64,20 +71,29 @@ document.addEventListener('DOMContentLoaded', () => {
     addCursorHover();
 
     // --- Smooth Scroll ---
-    document.querySelectorAll('nav a, .mobile-links a').forEach(anchor => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            if (this.getAttribute('href').startsWith('#')) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                }
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
             }
         });
     });
+
+    // --- Back to Top ---
+    if (backToTop) {
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 
     // --- Scroll-Linked Animations ---
     function updateOnScroll() {
@@ -85,23 +101,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const viewportHeight = window.innerHeight;
 
         // 1. Curtains Reveal
-        const progress = Math.min(scrollY / (viewportHeight * 1.2), 1);
-        curtainTop.style.transform = `translateY(${-progress * 105}%)`;
-        curtainBottom.style.transform = `translateY(${progress * 105}%)`;
+        if (curtainTop && curtainBottom) {
+            const progress = Math.min(scrollY / (viewportHeight * 1.2), 1);
+            curtainTop.style.transform = `translateY(${-progress * 105}%)`;
+            curtainBottom.style.transform = `translateY(${progress * 105}%)`;
+        }
 
-        // 2. Headline Scaling — apply to whole wrapper so every phrase scales
-        const scaleProgress = 0.8 + (progress * 0.3);
-        if (cycleWrapper) cycleWrapper.style.transform = `scale(${scaleProgress})`;
+        // 2. Headline Scaling
+        if (cycleWrapper) {
+            const progress = Math.min(scrollY / (viewportHeight * 1.2), 1);
+            const scaleProgress = 0.8 + (progress * 0.3);
+            cycleWrapper.style.transform = `scale(${scaleProgress})`;
+        }
 
         // 3. Navbar Styling
-        if (scrollY > viewportHeight * 0.5) {
-            navbar.style.background = 'rgba(231, 228, 211, 0.9)';
-            navbar.style.backdropFilter = 'blur(10px)';
-            navbar.style.padding = '1rem 5%';
-        } else {
-            navbar.style.background = 'transparent';
-            navbar.style.backdropFilter = 'none';
-            navbar.style.padding = '2rem 5%';
+        if (navbar) {
+            if (scrollY > viewportHeight * 0.5) {
+                navbar.style.background = 'rgba(231, 228, 211, 0.9)';
+                navbar.style.backdropFilter = 'blur(10px)';
+                navbar.style.padding = '1rem 5%';
+            } else {
+                navbar.style.background = 'transparent';
+                navbar.style.backdropFilter = 'none';
+                navbar.style.padding = '2rem 5%';
+            }
         }
 
         // 4. Image Parallax
@@ -116,14 +139,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // 5. Scroll Progress
-        const totalHeight = document.documentElement.scrollHeight - viewportHeight;
-        const scrollPercent = (scrollY / totalHeight) * 100;
-        scrollProgress.style.width = scrollPercent + "%";
-    }
+        if (scrollProgress) {
+            const totalHeight = document.documentElement.scrollHeight - viewportHeight;
+            const scrollPercent = (scrollY / totalHeight) * 100;
+            scrollProgress.style.width = scrollPercent + "%";
+        }
 
-    window.addEventListener('scroll', () => {
-        requestAnimationFrame(updateOnScroll);
-    });
+        // 6. Back to Top Visibility
+        if (backToTop) {
+            if (scrollY > viewportHeight) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        }
+    }
 
     // --- Hero Ticker (Seamless vertical slot-machine) ---
     const cycleTrack = document.getElementById('cycle-track');
@@ -215,8 +245,42 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     });
 
+    // --- Footer Accordion ---
+    const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+    
+    accordionTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            // Check if we are in mobile view based on CSS behavior
+            // We use the visibility of chevron as a proxy for mobile mode
+            const chevron = this.querySelector('.chevron');
+            if (!chevron || window.getComputedStyle(chevron).display === 'none') return;
+            
+            e.preventDefault();
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+            const newState = !isExpanded;
+            
+            // Toggle current accordion
+            this.setAttribute('aria-expanded', newState.toString());
+            
+            // Pulse effect for feedback
+            this.style.opacity = '0.5';
+            setTimeout(() => this.style.opacity = '0.8', 150);
+            
+            // Optionally close other sections
+            accordionTriggers.forEach(other => {
+                if (other !== this) {
+                    other.setAttribute('aria-expanded', 'false');
+                }
+            });
+        });
+    });
+
     // Run once on load
     updateOnScroll();
+
+    window.addEventListener('scroll', () => {
+        requestAnimationFrame(updateOnScroll);
+    });
 
     // --- Testimonial Slider ---
     const track = document.getElementById('testimonial-track');
