@@ -16,16 +16,26 @@ document.addEventListener('DOMContentLoaded', () => {
     const mobileMenu = document.getElementById('mobile-menu');
 
     // --- Mobile Menu Toggle ---
+    let scrollY = 0;
+
+    const openMenu = () => {
+        scrollY = window.scrollY;
+        navToggle.classList.add('active');
+        mobileMenu.classList.add('active');
+        document.body.style.top = `-${scrollY}px`;
+        document.body.classList.add('menu-open');
+    };
+
     const closeMenu = () => {
         navToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
-        document.body.style.overflow = 'auto';
+        document.body.classList.remove('menu-open');
+        document.body.style.top = '';
+        window.scrollTo(0, scrollY);
     };
 
     navToggle.addEventListener('click', () => {
-        navToggle.classList.toggle('active');
-        mobileMenu.classList.toggle('active');
-        document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : 'auto';
+        mobileMenu.classList.contains('active') ? closeMenu() : openMenu();
     });
 
     document.getElementById('mobile-close').addEventListener('click', closeMenu);
@@ -55,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Smooth Scroll ---
     document.querySelectorAll('nav a, .mobile-links a').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
+        anchor.addEventListener('click', function (e) {
             if (this.getAttribute('href').startsWith('#')) {
                 e.preventDefault();
                 const targetId = this.getAttribute('href');
@@ -73,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateOnScroll() {
         const scrollY = window.scrollY;
         const viewportHeight = window.innerHeight;
-        
+
         // 1. Curtains Reveal
         const progress = Math.min(scrollY / (viewportHeight * 1.2), 1);
         curtainTop.style.transform = `translateY(${-progress * 105}%)`;
@@ -117,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Hero Ticker (Seamless vertical slot-machine) ---
     const cycleTrack = document.getElementById('cycle-track');
-    const cWrapper   = document.getElementById('cycle-wrapper');
+    const cWrapper = document.getElementById('cycle-wrapper');
 
     if (cycleTrack && cWrapper) {
         // Wait for layout so we can measure real phrase height
@@ -143,13 +153,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     // Slide track up
                     cycleTrack.style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
-                    cycleTrack.style.transform  = `translateY(-${currentIdx * phraseH}px)`;
+                    cycleTrack.style.transform = `translateY(-${currentIdx * phraseH}px)`;
 
                     setTimeout(() => {
                         // If we just showed the clone, snap back to position 0 instantly
                         if (currentIdx >= cycleTrack.children.length - 1) {
                             cycleTrack.style.transition = 'none';
-                            cycleTrack.style.transform  = 'translateY(0)';
+                            cycleTrack.style.transform = 'translateY(0)';
                             currentIdx = 0;
                         }
                         locked = false;
@@ -207,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Run once on load
     updateOnScroll();
-    
+
     // --- Testimonial Slider ---
     const track = document.getElementById('testimonial-track');
     const dots = document.querySelectorAll('.t-dot');
@@ -229,7 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Auto-play every 5s
     const startAutoPlay = () => { autoPlayTimer = setInterval(() => goTo(currentSlide + 1), 5000); };
-    const stopAutoPlay  = () => clearInterval(autoPlayTimer);
+    const stopAutoPlay = () => clearInterval(autoPlayTimer);
 
     const sliderSection = document.querySelector('.testimonial-section');
     if (sliderSection) {

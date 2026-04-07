@@ -85,6 +85,7 @@
     cursor: none !important; /* Hide original cursor */
 }
 
+
 /* Ensure sections have relative positioning for the grain */
 body {
     background-color: var(--bg-primary);
@@ -223,6 +224,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     z-index: 100;
+    overflow: hidden;
 }
 
 .logo {
@@ -403,6 +405,7 @@ nav {
     background: var(--bg-primary);
     position: relative;
     z-index: 5;
+    overflow: hidden;
 }
 
 .subheading {
@@ -955,6 +958,13 @@ footer {
     visibility: visible;
 }
 
+body.menu-open {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    right: 0;
+}
+
 .mobile-close {
     position: absolute;
     top: 2rem;
@@ -1004,6 +1014,7 @@ footer {
 @media (max-width: 768px) {
     .nav-toggle { display: flex; }
     .nav-links { display: none; }
+    nav { padding: 1rem 5%; }
     
     .about-grid, .contact-split, .services-grid, .projects-list, .pricing-grid, .process-grid {
         grid-template-columns: 1fr;
