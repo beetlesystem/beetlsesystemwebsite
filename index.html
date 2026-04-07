@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beetle System | Premium Digital Solutions</title>
+    <meta name="description"
+        content="Beetle System - A premium digital solution agency specializing in high-end web design and development.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Outfit:wght@300;400;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="grain"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <div id="loader" class="loader">
+        <div class="loader-beetle">
+            <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Legs -->
+                <path class="leg l-1" d="M30 40 L10 30" stroke="currentColor" stroke-width="2" />
+                <path class="leg l-2" d="M30 60 L5 60" stroke="currentColor" stroke-width="2" />
+                <path class="leg l-3" d="M35 80 L15 100" stroke="currentColor" stroke-width="2" />
+                <path class="leg r-1" d="M70 40 L90 30" stroke="currentColor" stroke-width="2" />
+                <path class="leg r-2" d="M70 60 L95 60" stroke="currentColor" stroke-width="2" />
+                <path class="leg r-3" d="M65 80 L85 100" stroke="currentColor" stroke-width="2" />
+
+                <!-- Body Base -->
+                <ellipse class="body-base" cx="50" cy="70" rx="25" ry="35" fill="currentColor" opacity="0.2" />
+
+                <!-- Head -->
+                <circle class="head" cx="50" cy="30" r="12" fill="currentColor" />
+                <path class="antenna" d="M45 20 C40 10 35 15 30 10" fill="none" stroke="currentColor"
+                    stroke-width="1.5" />
+                <path class="antenna" d="M55 20 C60 10 65 15 70 10" fill="none" stroke="currentColor"
+                    stroke-width="1.5" />
+
+                <!-- Wings (Elytra) -->
+                <path class="wing wing-l" d="M50 40 C30 40 25 60 25 80 C25 100 40 110 50 110 Z" fill="currentColor" />
+                <path class="wing wing-r" d="M50 40 C70 40 75 60 75 80 C75 100 60 110 50 110 Z" fill="currentColor" />
+            </svg>
+        </div>
+        <div class="loader-text">BEETLE SYSTEM</div>
+    </div>
+
+    <nav id="navbar">
+        <div class="logo">BEETLE SYSTEM</div>
+        <div class="nav-toggle" id="nav-toggle">
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div id="scroll-progress"></div>
+    </nav>
+
+    <div class="mobile-menu" id="mobile-menu">
+        <button class="mobile-close" id="mobile-close" aria-label="Close menu">
+            <span></span>
+            <span></span>
+        </button>
+        <div class="mobile-links">
+            <a href="#about">About</a>
+            <a href="#services">Services</a>
+            <a href="#projects">Projects</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </div>
+
+    <main>
+        <!-- Hero Section with Split-Screen Animation -->
+        <section class="hero-wrapper" id="hero">
+            <div class="hero-sticky">
+                <!-- Content background -->
+                <div class="hero-bg-content">
+                    <div class="hero-cycle-wrapper" id="cycle-wrapper">
+                        <div class="cycle-track" id="cycle-track">
+                            <h1 class="reveal-h1 cycle-phrase">CREATIVE<br>AGENCY</h1>
+                            <h1 class="reveal-h1 cycle-phrase">WEB<br>EXPERTS</h1>
+                            <h1 class="reveal-h1 cycle-phrase">SOFTWARE<br>SOLUTIONS</h1>
+                            <h1 class="reveal-h1 cycle-phrase">YOUR<br>PARTNER</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Curtain Masks -->
+                <div class="curtain-top" id="curtain-top">
+                    <div class="curtain-content">
+                        <div class="split-text">BEETLE SYSTEM</div>
+                    </div>
+                </div>
+                <div class="curtain-bottom" id="curtain-bottom">
+                    <div class="curtain-content">
+                        <div class="split-text">BEETLE SYSTEM</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section about-section">
+            <div class="container">
+                <span class="subheading"><span>01 / WHO WE ARE</span></span>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h2><span>We build digital interfaces that define the future.</span></h2>
+                        <p>Beetle System is a boutique digital agency focused on creating immersive experiences. We
+                            merge technical precision with aesthetic excellence to deliver results that wow.</p>
+                    </div>
+                    <div class="about-image">
+                        <div class="img-reveal-wrapper">
+                            <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200"
+                                alt="Office Space">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section id="services" class="section services-section">
+            <div class="container">
+                <span class="subheading"><span>02 / WHAT WE DO</span></span>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <span class="service-num">01</span>
+                        <h3>Web Design</h3>
+                        <p>High-fidelity designs that capture attention and provide seamless user journeys.</p>
+                    </div>
+                    <div class="service-card">
+                        <span class="service-num">02</span>
+                        <h3>Development</h3>
+                        <p>Robust, scalable, and high-performance applications built with modern tools.</p>
+                    </div>
+                    <div class="service-card">
+                        <span class="service-num">03</span>
+                        <h3>Digital Strategy</h3>
+                        <p>Data-driven approaches to help your brand grow and succeed in the digital landscape.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="section process-section">
+            <div class="container">
+                <span class="subheading"><span>03 / OUR PROCESS</span></span>
+                <div class="process-grid">
+                    <div class="process-step">
+                        <div class="step-num">01</div>
+                        <h4>Discovery</h4>
+                        <p>We dive deep into your brand, objectives, and audience to build a solid strategy.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">02</div>
+                        <h4>Design</h4>
+                        <p>Crafting visual identities and high-fidelity interfaces that wow your users.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">03</div>
+                        <h4>Development</h4>
+                        <p>Translating designs into clean, performant, and scalable code.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="step-num">04</div>
+                        <h4>Launch</h4>
+                        <p>Deploying your project to the world with rigorous testing and optimization.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="section team-section">
+            <div class="container">
+                <span class="subheading"><span>04 / THE TEAM</span></span>
+                <div class="team-grid">
+
+                    <div class="team-card">
+                        <div class="team-monogram">
+                            <span>AR</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>Ateeb Ramzan</h3>
+                            <span class="team-role">Co-Founder & Developer</span>
+                            <p>Creative developer with a deep focus on UI/UX and frontend engineering. Brings designs to
+                                life with precision animations and modern web standards.</p>
+                        </div>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-monogram">
+                            <span>IM</span>
+                        </div>
+                        <div class="team-info">
+                            <h3>Irfan Manzoor</h3>
+                            <span class="team-role">Co-Founder & Developer</span>
+                            <p>Full-stack developer passionate about building high-performance digital products. Focused
+                                on clean code, smart architecture, and pixel-perfect interfaces.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section projects-section">
+            <div class="container">
+                <span class="subheading"><span>04 / SELECTED WORKS</span></span>
+                <div class="projects-list">
+                    <div class="project-item">
+                        <div class="project-img">
+                            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426"
+                                alt="Project 1">
+                        </div>
+                        <div class="project-info">
+                            <h3>Lumina Digital</h3>
+                            <span>Rebranding & UX</span>
+                        </div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-img">
+                            <img src="https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&q=80&w=1364"
+                                alt="Project 2">
+                        </div>
+                        <div class="project-info">
+                            <h3>Nexus Core</h3>
+                            <span>Identity Design</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        </section>
+
+        <!-- Pricing Section -->
+        <section class="section pricing-section">
+            <div class="container">
+                <span class="subheading"><span>05 / PACKAGES</span></span>
+                <div class="pricing-grid">
+                    <div class="price-card">
+                        <h3>Starter</h3>
+                        <div class="price">₹14,999<span>/project</span></div>
+                        <ul>
+                            <li>UI/UX Design</li>
+                            <li>5-Page Website</li>
+                            <li>Mobile Responsive</li>
+                            <li>Basic SEO Setup</li>
+                        </ul>
+                        <a href="#contact" class="btn-outline">Get Started</a>
+                    </div>
+                    <div class="price-card featured">
+                        <div class="badge">Popular</div>
+                        <h3>Premium</h3>
+                        <div class="price">₹29,999<span>/project</span></div>
+                        <ul>
+                            <li>Custom Web App</li>
+                            <li>Advanced SEO</li>
+                            <li>CMS Integration</li>
+                            <li>15 Days Maintenance Support</li>
+                        </ul>
+                        <a href="#contact" class="btn-solid">Get Started</a>
+                    </div>
+                    <div class="price-card">
+                        <h3>Enterprise</h3>
+                        <div class="price">Custom<span>/quote</span></div>
+                        <ul>
+                            <li>Full Digital Audit</li>
+                            <li>System Architecture</li>
+                            <li>API Integrations</li>
+                            <li>Priority Support</li>
+                        </ul>
+                        <a href="#contact" class="btn-outline">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonial Section -->
+        <section class="section testimonial-section">
+            <div class="container">
+                <span class="subheading"><span>06 / REVIEWS</span></span>
+
+                <div class="testimonial-slider">
+                    <div class="testimonial-track" id="testimonial-track">
+                        <!-- Slide 1 -->
+                        <div class="testimonial-slide">
+                            <p class="quote">"Beetle System completely transformed our digital presence. Their attention
+                                to detail and creative vision is unmatched in the industry."</p>
+                            <div class="client">
+                                <strong>Arfat Ahmad</strong>
+                                <span>CEO,Power world climate</span>
+                            </div>
+                        </div>
+                        <!-- Slide 2 -->
+                        <div class="testimonial-slide">
+                            <p class="quote">"Working with Beetle System was a game-changer. They delivered a website
+                                that truly captures our brand identity and drives real results."</p>
+                            <div class="client">
+                                <strong>Zubair Ahmad</strong>
+                                <span>FOUNDER, Zubitours - DMC Srinagar </span>
+                            </div>
+                        </div>
+                        <!-- Slide 3 -->
+                        <div class="testimonial-slide">
+                            <p class="quote">"The team at Beetle System exceeded every expectation. The animations, the
+                                design, the performance — all world-class. Highly recommended."</p>
+                            <div class="client">
+                                <strong>Faiq Bhat</strong>
+                                <span>Founder , Driyum.com</span>
+                            </div>
+                        </div>
+                        <!-- Slide 4 -->
+                        <div class="testimonial-slide">
+                            <p class="quote">"From strategy to launch, they were with us every step of the way. Our
+                                conversion rate improved by 40% in the first month alone."</p>
+                            <div class="client">
+                                <strong>Ahmad Bhat</strong>
+                                <span>CEO, Pnada tours and travels</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial-controls">
+                        <button class="t-arrow t-prev" id="t-prev" aria-label="Previous testimonial">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="15 18 9 12 15 6" />
+                            </svg>
+                        </button>
+                        <div class="t-dots" id="t-dots">
+                            <button class="t-dot active" data-index="0"></button>
+                            <button class="t-dot" data-index="1"></button>
+                            <button class="t-dot" data-index="2"></button>
+                            <button class="t-dot" data-index="3"></button>
+                        </div>
+                        <button class="t-arrow t-next" id="t-next" aria-label="Next testimonial">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section contact-section">
+            <div class="container">
+                <div class="contact-split">
+                    <div class="contact-left">
+                        <span class="subheading"><span>07 / LET'S TALK</span></span>
+                        <h2><span>Ready to start your next project?</span></h2>
+                        <a href="mailto:beetlesystem@gmail.com" class="contact-link">beetlesystem@gmail.com</a>
+                    </div>
+                    <div class="contact-right">
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name">NAME</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">EMAIL</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">MESSAGE</label>
+                                <textarea id="message" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-btn">SEND MESSAGE</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container footer-content">
+            <p>&copy; 2026 BEETLE SYSTEM. ALL RIGHTS RESERVED.</p>
+            <div class="social-links">
+                <a href="#">TWITTER</a>
+                <a href="#">INSTAGRAM</a>
+                <a href="#">LINKEDIN</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
