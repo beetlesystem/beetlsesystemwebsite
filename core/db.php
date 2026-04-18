@@ -9,9 +9,9 @@ if (isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] === 'localhost' || $_
 } else {
     // PRODUCTION SETTINGS
     $host = 'localhost'; // Usually remains localhost on most cPanel/VPS hosts
-    $db_name = 'beetle_system_live';
-    $username = 'live_user';
-    $password = 'live_password_here';
+    $db_name = 'u167160735_beetlesystem';
+    $username = 'u167160735_beetlesystem';
+    $password = 'Admin@Bs123';
 }
 
 try {
