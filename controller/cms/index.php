@@ -174,13 +174,16 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
                 <div class="cms-card">
                     <h3 class="cms-title"><i class="fas fa-id-card"></i> 01 / PROFILE ASSETS</h3>
                     <div class="input-group">
-                        <label>IMAGE SOURCE</label>
-                        <input type="text" name="about_image" form="cms-master-form" class="cms-input" value="<?php echo htmlspecialchars($about_image); ?>" oninput="document.getElementById('about_preview').src = this.value">
-                        <img id="about_preview" src="<?php echo htmlspecialchars($about_image); ?>" style="width:100%; height:80px; object-fit:cover; border-radius:12px; margin-top:0.8rem; border:1px solid var(--cms-border);">
+                        <label>UPLOAD ABOUT IMAGE</label>
+                        <input type="file" name="about_image" form="cms-master-form" class="cms-input" accept="image/*" onchange="const [file] = this.files; if (file) document.getElementById('about_preview').src = URL.createObjectURL(file)">
+                        <img id="about_preview" src="<?php echo htmlspecialchars($about_image); ?>" style="width:100%; height:120px; object-fit:cover; border-radius:12px; margin-top:0.8rem; border:1px solid var(--cms-border);">
                     </div>
                     <div class="input-group" style="margin-top:1.5rem;">
-                        <label>VIDEO OVERLAY (MP4)</label>
-                        <input type="text" name="about_video" form="cms-master-form" class="cms-input" value="<?php echo htmlspecialchars($about_video ?? ''); ?>" placeholder="https://example.com/video.mp4">
+                        <label>UPLOAD VIDEO OVERLAY (MP4)</label>
+                        <input type="file" name="about_video" form="cms-master-form" class="cms-input" accept="video/mp4">
+                        <?php if (!empty($about_video)): ?>
+                            <div style="font-size: 0.6rem; margin-top: 0.5rem; opacity: 0.5;">Current: <?php echo basename($about_video); ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
 

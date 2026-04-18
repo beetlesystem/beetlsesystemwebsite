@@ -4,7 +4,7 @@ require_once 'core/track_visitor.php';
 require_once 'core/csrf.php';
 trackVisitor($pdo, 'Home');
 
-$home_projects = $pdo->query("SELECT * FROM projects ORDER BY is_featured DESC, created_at DESC LIMIT 3")->fetchAll();
+$home_projects = $pdo->query("SELECT * FROM projects ORDER BY is_featured DESC, created_at DESC LIMIT 4")->fetchAll();
 $home_testimonials = $pdo->query("SELECT * FROM testimonials WHERE status = 'featured' ORDER BY created_at DESC LIMIT 6")->fetchAll();
 
 // Fetch CMS Settings
