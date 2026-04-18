@@ -261,7 +261,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1000;
+    z-index: 5;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     background: transparent;
     border-bottom: 1px solid transparent;
@@ -626,7 +626,7 @@ nav.scrolled {
     height: 50.5vh;
     /* Slight overlap to avoid gaps */
     background: var(--bg-primary);
-    z-index: 2;
+    z-index: 10;
     overflow: hidden;
     transition: transform 0.1s linear;
     /* Responsive to scroll */
