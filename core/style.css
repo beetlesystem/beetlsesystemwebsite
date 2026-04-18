@@ -136,7 +136,7 @@ body.page-loaded main {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 10001;
     gap: 2rem;
     animation: fadeOut 1s ease-in-out forwards 2.5s;
     /* Increased duration for longer animation */
