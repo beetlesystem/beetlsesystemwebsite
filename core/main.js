@@ -258,6 +258,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => {
             requestAnimationFrame(() => {
                 const firstPhrase = cycleTrack.firstElementChild;
+                if (!firstPhrase) return;
                 const phraseH = firstPhrase.offsetHeight;
 
                 // Fix wrapper to exactly one phrase tall
@@ -351,27 +352,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     accordionTriggers.forEach(trigger => {
         trigger.addEventListener('click', function (e) {
-            // Check if we are in mobile view based on CSS behavior
-            // We use the visibility of chevron as a proxy for mobile mode
-            const chevron = this.querySelector('.chevron');
-            if (!chevron || window.getComputedStyle(chevron).display === 'none') return;
-
             e.preventDefault();
             const isExpanded = this.getAttribute('aria-expanded') === 'true';
-            const newState = !isExpanded;
+            
+            // Toggle current
+            this.setAttribute('aria-expanded', (!isExpanded).toString());
 
-            // Toggle current accordion
-            this.setAttribute('aria-expanded', newState.toString());
-
-            // Pulse effect for feedback
+            // Pulse effect
             this.style.opacity = '0.5';
-            setTimeout(() => this.style.opacity = '0.8', 150);
+            setTimeout(() => this.style.opacity = '1', 150);
 
-            // Optionally close other sections
+            // Close others
             accordionTriggers.forEach(other => {
-                if (other !== this) {
-                    other.setAttribute('aria-expanded', 'false');
-                }
+                if (other !== this) other.setAttribute('aria-expanded', 'false');
             });
         });
     });
@@ -544,12 +537,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close modal on click outside content
     window.addEventListener('click', (e) => {
-        if (e.target === modal) closeModal();
+        if (e.target === modal) closeAllModals();
     });
 
     // Close on Escape key
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeModal();
+        if (e.key === 'Escape') closeAllModals();
     });
     // --- Global Feedback Modal ---
     const fbModal = document.getElementById('feedback-modal');
