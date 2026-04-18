@@ -6,12 +6,14 @@ if (isset($_SERVER['HTTP_HOST']) && ($_SERVER['HTTP_HOST'] === 'localhost' || $_
     $db_name = 'beetle_system';
     $username = 'root';
     $password = '';
+    define('BASE_URL', '/beetlesystem/');
 } else {
     // PRODUCTION SETTINGS
     $host = 'localhost'; // Usually remains localhost on most cPanel/VPS hosts
     $db_name = 'u167160735_beetlesystem';
     $username = 'u167160735_beetlesystem';
     $password = 'Admin@Bs123';
+    define('BASE_URL', '/');
 }
 
 try {
