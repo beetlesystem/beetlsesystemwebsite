@@ -629,6 +629,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData();
             formData.append('name', document.getElementById('contact-name').value);
             formData.append('email', document.getElementById('contact-email').value);
+            formData.append('phone', document.getElementById('contact-phone').value);
             formData.append('subject', document.getElementById('contact-subject').value);
             formData.append('message', document.getElementById('contact-message').value);
 
