@@ -58,6 +58,7 @@ try {
         company VARCHAR(100),
         content TEXT,
         rating INT DEFAULT 5,
+        status ENUM('pending', 'featured') DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
@@ -68,6 +69,13 @@ try {
         user_agent TEXT,
         page_url VARCHAR(255),
         visited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )");
+
+    // Site Settings table
+    $pdo->exec("CREATE TABLE IF NOT EXISTS site_settings (
+        setting_key VARCHAR(100) PRIMARY KEY,
+        setting_value TEXT,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     )");
 
     // Insert a default admin if none exists

@@ -1,6 +1,7 @@
 <?php
 require_once '../../core/auth_check.php';
 require_once '../../core/db.php';
+require_once '../../core/csrf.php';
 
 // Fetch all settings
 $settings = $pdo->query("SELECT setting_key, setting_value FROM site_settings")->fetchAll(PDO::FETCH_KEY_PAIR);
@@ -237,7 +238,8 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
                         <span style="font-size:0.6rem; font-weight:900; letter-spacing:1px; color:#999; display:block; margin-bottom:1rem;">ADD NEW REVIEW</span>
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
                             <input type="text" id="rev_author" class="cms-input" placeholder="Author">
-                            <input type="text" id="rev_pos" class="cms-input" placeholder="Title">
+                            <input type="text" id="rev_pos" class="cms-input" placeholder="Title / Role">
+                            <input type="text" id="rev_company" class="cms-input" placeholder="Company" style="grid-column: span 2;">
                             <select id="rev_rating" class="cms-input" style="grid-column: span 2;">
                                 <option value="5">5 Stars</option>
                                 <option value="4">4 Stars</option>
@@ -304,11 +306,17 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
         function injectReview() {
             const author = document.getElementById('rev_author').value;
             const pos = document.getElementById('rev_pos').value;
+            const company = document.getElementById('rev_company').value;
             const content = document.getElementById('rev_content').value;
             const rating = document.getElementById('rev_rating').value;
             if(!author || !content) return alert('Missing parameters.');
             const fd = new FormData();
-            fd.append('author', author); fd.append('position', pos); fd.append('content', content); fd.append('rating', rating); fd.append('status', 'featured');
+            fd.append('author', author); 
+            fd.append('position', pos); 
+            fd.append('company', company);
+            fd.append('content', content); 
+            fd.append('rating', rating); 
+            fd.append('status', 'featured');
             fetch('controller/testimonials/submit.php', { method: 'POST', body: fd }).then(() => location.reload());
         }
 

@@ -186,16 +186,12 @@ document.addEventListener('DOMContentLoaded', () => {
             cycleWrapper.style.transform = `scale(${scaleProgress})`;
         }
 
-        // 3. Navbar Styling
+        // 3. Navbar Scrolled State
         if (navbar) {
-            if (scrollY > viewportHeight * 0.5) {
-                navbar.style.background = 'rgba(231, 228, 211, 0.9)';
-                navbar.style.backdropFilter = 'blur(10px)';
-                navbar.style.padding = '1rem 5%';
+            if (scrollY > 50) {
+                navbar.classList.add('scrolled');
             } else {
-                navbar.style.background = 'transparent';
-                navbar.style.backdropFilter = 'none';
-                navbar.style.padding = '2rem 5%';
+                navbar.classList.remove('scrolled');
             }
         }
 
@@ -432,52 +428,95 @@ document.addEventListener('DOMContentLoaded', () => {
     const packageData = {
         starter: {
             title: "Starter Package",
+            price: "₹14,999",
             desc: "Perfect for startups and small businesses looking for a professional entry into the digital space.",
             features: (window.beetleCMS && window.beetleCMS.starterFeatures) ? window.beetleCMS.starterFeatures : ["Custom UI/UX Design", "5-Page Responsive Website", "7 Days Post-Launch Support", "Basic SEO Optimization", "Contact Form Integration", "Social Media Linking"]
         },
         premium: {
             title: "Premium Package",
+            price: "₹29,999",
             desc: "Advanced solutions for growing businesses that require dynamic content management and interactive features.",
             features: (window.beetleCMS && window.beetleCMS.premiumFeatures) ? window.beetleCMS.premiumFeatures : ["Custom Dashboard & CMS", "Unlimited Pages (within scope)", "Advanced SEO & Analytics", "Interactive UI Animations", "15 Days Priority Support", "Newsletter Integration", "Speed Performance Tuning"]
         },
         enterprise: {
             title: "Enterprise Solutions",
+            price: "Custom",
             desc: "Tailor-made systems designed to automate complex business processes and scale infinitely.",
             features: (window.beetleCMS && window.beetleCMS.enterpriseFeatures) ? window.beetleCMS.enterpriseFeatures : ["E-commerce Management Platforms", "Custom CRM & Business Logic", "Billing & Invoicing Automation", "API & Third-party Integrations", "Dedicated Project Management", "30 Days Extensive Support", "Security Audits & Scaling"]
         }
     };
 
+    // --- Modal Orchestrator ---
     const modal = document.getElementById('package-modal');
     const modalTitle = document.getElementById('modal-title');
     const modalDesc = document.getElementById('modal-desc');
     const modalList = document.getElementById('modal-list');
-    const modalClose = document.querySelector('.modal-close');
+    const modalPrice = document.getElementById('modal-price');
 
-    const openModal = (pkg) => {
+    const closeAllModals = () => {
+        document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+        lenis?.start();
+    };
+
+    // Close on button click
+    document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeAllModals();
+        });
+    });
+
+    // Close on backdrop click
+    document.querySelectorAll('.modal').forEach(m => {
+        m.addEventListener('click', (e) => {
+            if (e.target === m) closeAllModals();
+        });
+    });
+
+    // Close on Escape
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAllModals();
+    });
+
+    // Specialized Modal Openers
+    const openPackageModal = (pkg) => {
         const data = packageData[pkg];
         if (!data) return;
 
         modalTitle.innerText = data.title;
         modalDesc.innerText = data.desc;
+        if (modalPrice) modalPrice.innerText = data.price;
         modalList.innerHTML = data.features.map(f => `<li>${f}</li>`).join('');
 
         modal.classList.add('active');
         lenis?.stop();
-    };
 
-    const closeModal = () => {
-        modal.classList.remove('active');
-        lenis?.start();
+        // Animate Items
+        gsap.fromTo("#modal-list li", 
+            { opacity: 0, x: -30 }, 
+            { opacity: 1, x: 0, stagger: 0.1, duration: 0.8, ease: "power4.out", delay: 0.4 }
+        );
     };
 
     document.querySelectorAll('.view-details').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const pkg = btn.getAttribute('data-package');
-            openModal(pkg);
-        });
+        btn.addEventListener('click', () => openPackageModal(btn.dataset.package));
     });
 
-    if (modalClose) modalClose.addEventListener('click', closeModal);
+    // --- Active Link Detection ---
+    const setActiveLink = () => {
+        const currentPath = window.location.pathname.split('/').pop() || './';
+        const navLinks = document.querySelectorAll('.nav-links a, .mobile-links a');
+        
+        navLinks.forEach(link => {
+            const href = link.getAttribute('href');
+            if (href === currentPath || (currentPath === './' && href === './')) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    };
+    setActiveLink();
 
     // Centered Logo Click Animation
     const centerLogo = document.querySelector('.logo-circle-btn');
@@ -658,19 +697,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const closeContactModal = () => {
-        if (contactModal) {
-            contactModal.classList.remove('active');
-            lenis?.start();
-        }
-    };
-
     document.querySelectorAll('.contact-trigger').forEach(btn => {
-        console.log('btn');
         btn.addEventListener('click', openContactModal);
     });
-
-    if (contactModalClose) contactModalClose.addEventListener('click', closeContactModal);
 
     if (msForm) {
         msForm.querySelectorAll('.next-btn').forEach(btn => {
@@ -787,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (result.status === 'success') {
                     showFeedback('Success', 'Inquiry received! Our team will review your project details and get back to you within 24 hours.');
-                    closeContactModal();
+                    closeAllModals();
                     msForm.reset();
                     catItems.forEach(i => i.classList.remove('selected'));
                     mainCatItems.forEach(i => i.classList.remove('active'));
@@ -863,37 +892,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (paymentTeaser && paymentModal) {
         paymentTeaser.addEventListener('click', () => {
             paymentModal.classList.add('active');
-            lenis.stop();
+            lenis?.stop();
         });
     }
 
 
-    if (paymentModalClose) {
-        paymentModalClose.addEventListener('click', () => {
-            paymentModal.classList.remove('active');
-            lenis.start();
-        });
-    }
-
-    // Close on click outside (extends the existing window click listener)
-    window.addEventListener('click', (e) => {
-        if (e.target === contactModal) closeContactModal();
-        if (e.target === paymentModal) {
-            paymentModal.classList.remove('active');
-            lenis.start();
-        }
-    });
-
-    // Handle Escape key
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            closeContactModal();
-            if (paymentModal) {
-                paymentModal.classList.remove('active');
-                lenis.start();
-            }
-        }
-    });
 
     // --- Dashboard Chart Initialization ---
     const chartCanvas = document.getElementById('dashboardChart');

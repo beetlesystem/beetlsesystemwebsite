@@ -1,6 +1,7 @@
 <?php 
 require_once 'core/db.php';
 require_once 'core/track_visitor.php';
+require_once 'core/csrf.php';
 trackVisitor($pdo, 'Home');
 
 $home_projects = $pdo->query("SELECT * FROM projects ORDER BY is_featured DESC, created_at DESC LIMIT 3")->fetchAll();
@@ -9,9 +10,13 @@ $home_testimonials = $pdo->query("SELECT * FROM testimonials WHERE status = 'fea
 // Fetch CMS Settings
 $settings = $pdo->query("SELECT setting_key, setting_value FROM site_settings")->fetchAll(PDO::FETCH_KEY_PAIR);
 $about_image = $settings['about_image'] ?? 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200';
-$pk_starter = array_unique(json_decode($settings['package_starter'] ?? '["Custom UI/UX Design","7 days Maintenance Support","Secure Hosting (HTTPS Enabled)","SEO-Friendly Structure"]', true));
-$pk_premium = array_unique(json_decode($settings['package_premium'] ?? '["Dashboard-CMS/Admin Panel","Advanced SEO","Interactive Features","15 Days Maintenance Support"]', true));
-$pk_enterprise = array_unique(json_decode($settings['package_enterprise'] ?? '["E-commerce Platforms","Custom CRM & Business Systems","Billing & Invoicing Automation","Scalable Web Applications"]', true));
+$pk_starter = json_decode($settings['package_starter'] ?? '[]', true) ?: ["Custom UI/UX Design","7 days Maintenance Support","Secure Hosting (HTTPS Enabled)","SEO-Friendly Structure"];
+$pk_premium = json_decode($settings['package_premium'] ?? '[]', true) ?: ["Dashboard-CMS/Admin Panel","Advanced SEO","Interactive Features","15 Days Maintenance Support"];
+$pk_enterprise = json_decode($settings['package_enterprise'] ?? '[]', true) ?: ["E-commerce Platforms","Custom CRM & Business Systems","Billing & Invoicing Automation","Scalable Web Applications"];
+
+$pk_starter = array_unique($pk_starter);
+$pk_premium = array_unique($pk_premium);
+$pk_enterprise = array_unique($pk_enterprise);
 
 include 'includes/pageheader.php'; 
 ?>
@@ -254,6 +259,7 @@ include 'includes/pageheader.php';
                 <span class="subheading"><span>07 / REVIEWS</span></span>
 
                 <div class="testimonial-slider">
+                    <!-- DEBUG: Testimonials Count: <?php echo count($home_testimonials); ?> -->
                     <div class="testimonial-track" id="testimonial-track">
                         <?php if (empty($home_testimonials)): ?>
                             <div class="testimonial-slide">
@@ -536,7 +542,8 @@ include 'includes/pageheader.php';
                 <p id="modal-desc"></p>
                 <ul id="modal-list" class="modal-list"></ul>
                 <div class="modal-footer">
-                    <a href="#contact" class="btn-solid modal-cta modal-close">Get Started Now</a>
+                    <span id="modal-price" class="modal-price-teaser"></span>
+                    <a href="contact" class="modal-cta">GET STARTED</a>
                 </div>
             </div>
         </div>
@@ -566,11 +573,10 @@ include 'includes/pageheader.php';
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/lenis@latest/dist/lenis.min.js"></script>
     <script>
         // CMS Orchestrated Data
         window.beetleCMS = {
-            csrfToken: '<?php require_once "core/csrf.php"; echo csrf_token_js(); ?>',
+            csrfToken: '<?php echo csrf_token_js(); ?>',
             starterFeatures: <?php echo json_encode($pk_starter); ?>,
             premiumFeatures: <?php echo json_encode($pk_premium); ?>,
             enterpriseFeatures: <?php echo json_encode($pk_enterprise); ?>

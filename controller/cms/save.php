@@ -1,10 +1,12 @@
 <?php
 require_once '../../core/auth_check.php';
 require_once '../../core/db.php';
+require_once '../../core/csrf.php';
 
 header('Content-Type: application/json');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $about_image = $_POST['about_image'] ?? '';
     $pk_starter = json_encode($_POST['package_starter'] ?? []);
     $pk_premium = json_encode($_POST['package_premium'] ?? []);

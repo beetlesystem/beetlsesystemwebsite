@@ -55,4 +55,3 @@ function csrf_verify(bool $json = true): void {
         exit;
     }
 }
-?>

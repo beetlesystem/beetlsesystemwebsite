@@ -1,9 +1,11 @@
 
-    <nav id="navbar">
-        <div class="logo"><a href="./" style="text-decoration: none; color: #000;">BEETLE SYSTEM</a></div>
+    <nav id="navbar" aria-label="Main Navigation">
+        <div class="logo">
+            <a href="./" style="text-decoration: none; color: inherit;">BEETLE SYSTEM</a>
+        </div>
 
         <div class="header-logo-center">
-            <a href="admin" class="logo-circle-btn" aria-label="Go to login">
+            <a href="admin" class="logo-circle-btn" aria-label="Administrative Login Portal">
                 <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
                     <!-- Legs -->
                     <g class="btn-legs" stroke="black" stroke-width="2" fill="none">
@@ -29,10 +31,11 @@
             </a>
         </div>
 
-        <div class="nav-toggle" id="nav-toggle">
+        <div class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation menu">
             <span></span>
             <span></span>
         </div>
+        
         <div class="nav-links">
             <a href="about">About</a>
             <a href="services">Services</a>
