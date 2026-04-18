@@ -1,23 +1,19 @@
 Options -MultiViews -Indexes
 RewriteEngine On
 
-# Detect if we're in a subfolder or root
-# RewriteBase /
-
-# Handle real files/folders
+# 1. Prevent infinite loops and handle real assets
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# 1. Main Direct Mappings
+# 2. Main Mappings
 RewriteRule ^$ index.php [L]
 RewriteRule ^home/?$ index.php [L]
-RewriteRule ^about/?$ view/about.php [L]
-RewriteRule ^services/?$ view/services.php [L]
-RewriteRule ^projects/?$ view/projects.php [L]
-RewriteRule ^contact/?$ view/contact.php [L]
 
-# 2. Admin Mappings
+# 3. View Fallbacks (Explicitly defined for safety)
+RewriteRule ^(about|contact|services|projects)/?$ view/$1.php [L]
+
+# 4. Admin Mappings
 RewriteRule ^dashboard/?$ controller/dashboard/index.php [L]
 RewriteRule ^admin/?$ controller/index.php [L]
 RewriteRule ^register/?$ controller/register.php [L]
@@ -28,15 +24,9 @@ RewriteRule ^admin/visitors/?$ controller/visitors/index.php [L]
 RewriteRule ^admin/clients/?$ controller/clients/index.php [L]
 RewriteRule ^admin/cms/?$ controller/cms/index.php [L]
 
-# 3. Handle Root PHP files as fallback
+# 5. Generic PHP Fallback
 RewriteCond %{REQUEST_FILENAME}.php -f
-RewriteRule ^([^/]+)/?$ $1.php [L]
+RewriteRule ^([^/.]+)/?$ $1.php [L]
 
-# 4. Handle View PHP files as fallback
-RewriteCond %{REQUEST_URI} ^/([^/]+)/?$
-RewriteCond %{DOCUMENT_ROOT}/view/%1.php -f [OR]
-RewriteCond view/%1.php -f 
-RewriteRule ^([^/]+)/?$ view/$1.php [L]
-
-# 404 Error page
+# 6. Global 404
 ErrorDocument 404 /view/404.php

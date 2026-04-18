@@ -1,4 +1,7 @@
-<?php include '../includes/pageheader.php'; ?>
+<?php 
+require_once '../core/db.php';
+include '../includes/pageheader.php'; 
+?>
 
 <body class="inner-page">
     <div class="grain"></div>
