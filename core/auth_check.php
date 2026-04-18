@@ -23,16 +23,17 @@ if (!isset($_SESSION['user_id'])) {
                     $_SESSION['admin_id'] = $user['admin_id'];
                     $_SESSION['full_name'] = $user['full_name'];
                 } else {
-                    header("Location: /beetlesystem/admin");
+                    header("Location: " . BASE_URL . "admin");
                     exit;
                 }
             } else {
-                header("Location: /beetlesystem/admin");
+                header("Location: " . BASE_URL . "admin");
                 exit;
             }
+        } else {
         }
     } else {
-        header("Location: /beetlesystem/admin");
+        header("Location: " . BASE_URL . "admin");
         exit;
     }
 }

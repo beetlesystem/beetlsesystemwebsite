@@ -32,7 +32,7 @@ $total_clients = count($clients);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <base href="/beetlesystem/">
+    <base href="<?php echo BASE_URL; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clients | Beetle System</title>
     <!-- Fonts -->

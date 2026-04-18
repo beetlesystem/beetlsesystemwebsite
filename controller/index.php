@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $cookie_value = base64_encode($user['admin_id'] . '|' . $signature);
                 setcookie('auth_beetle', $cookie_value, time() + (86400 * 30), "/"); 
 
-                header("Location: /beetlesystem/dashboard");
+                header("Location: " . BASE_URL . "dashboard");
                 exit;
             } else {
                 $error = 'Invalid Administrator ID or Passphrase.';
@@ -49,7 +49,7 @@ $num2 = rand(1, 9);
 $_SESSION['captcha_ans'] = $num1 + $num2;
 
 if (isset($_SESSION['user_id'])) {
-    header("Location: /beetlesystem/dashboard");
+    header("Location: " . BASE_URL . "dashboard");
     exit;
 }
 ?>
@@ -58,7 +58,7 @@ if (isset($_SESSION['user_id'])) {
 
 <head>
     <meta charset="UTF-8">
-    <base href="/beetlesystem/">
+    <base href="<?php echo BASE_URL; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Beetle System</title>
     <meta name="description" content="Access the Beetle System portal for project tracking and collaboration.">
@@ -209,7 +209,7 @@ if (isset($_SESSION['user_id'])) {
         <div class="login-glow"></div>
         <div class="login-container reveal-from-bottom">
             <div class="login-header">
-                <a href="/beetlesystem/" class="login-logo">
+                <a href="<?php echo BASE_URL; ?>" class="login-logo">
                     <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
                         <path d="M50 40 C30 40 25 60 25 80 C25 100 40 110 50 110 Z" fill="currentColor" />
                         <path d="M50 40 C70 40 75 60 75 80 C75 100 60 110 50 110 Z" fill="currentColor" />
@@ -257,8 +257,8 @@ if (isset($_SESSION['user_id'])) {
             </form>
 
             <div class="form-footer">
-                <p>Forgot password? <a href="/beetlesystem/contact">Contact Support</a></p>
-                <a href="/beetlesystem/" style="display: block; margin-top: 2rem; font-size: 0.7rem; letter-spacing: 2px;">← BACK TO HOME</a>
+                <p>Forgot password? <a href="contact">Contact Support</a></p>
+                <a href="<?php echo BASE_URL; ?>" style="display: block; margin-top: 2rem; font-size: 0.7rem; letter-spacing: 2px;">← BACK TO HOME</a>
             </div>
         </div>
     </section>

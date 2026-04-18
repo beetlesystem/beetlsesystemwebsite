@@ -229,7 +229,7 @@ include '../includes/pageheader.php';
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/lenis@latest/dist/lenis.min.js"></script>
-    <script src="/beetlesystem/core/main.js"></script>
+    <script src="core/main.js"></script>
 </body>
 
 </html>

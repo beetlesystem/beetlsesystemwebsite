@@ -30,7 +30,7 @@ $avg_rating = round($avg_rating, 1);
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <base href="/beetlesystem/">
+    <base href="<?php echo BASE_URL; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sentiment Nebula | Beetle System</title>
     <!-- Fonts -->

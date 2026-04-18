@@ -44,7 +44,7 @@ if (empty($labels)) {
 
 <head>
     <meta charset="UTF-8">
-    <base href="/beetlesystem/">
+    <base href="<?php echo BASE_URL; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard | Beetle System</title>
     <!-- Fonts -->
@@ -206,7 +206,7 @@ if (empty($labels)) {
 
         function viewInquiry(id) {
             console.log('Viewing enquiry details:', id);
-            window.location.href = '/beetlesystem/controller/contacts/index.php?view_id=' + id;
+            window.location.href = '<?php echo BASE_URL; ?>controller/contacts/index.php?view_id=' + id;
         }
     </script>
 </body>

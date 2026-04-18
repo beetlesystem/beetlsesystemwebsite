@@ -5,6 +5,7 @@ session_destroy();
 // Remove persistence cookie
 setcookie('auth_beetle', '', time() - 3600, "/");
 
-header("Location: /beetlesystem/login");
+require_once '../core/db.php';
+header("Location: " . BASE_URL . "admin");
 exit;
 ?>

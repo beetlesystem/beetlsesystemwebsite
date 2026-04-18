@@ -27,7 +27,7 @@ $visitors = $pdo->query("SELECT * FROM visitors ORDER BY visited_at DESC LIMIT 1
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <base href="/beetlesystem/">
+    <base href="<?php echo BASE_URL; ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visitors | Beetle System</title>
     <!-- Fonts -->
