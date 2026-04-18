@@ -172,11 +172,15 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
                 
                 <!-- BRAND -->
                 <div class="cms-card">
-                    <h3 class="cms-title"><i class="fas fa-id-card"></i> 01 / PROFILE IMAGE</h3>
+                    <h3 class="cms-title"><i class="fas fa-id-card"></i> 01 / PROFILE ASSETS</h3>
                     <div class="input-group">
                         <label>IMAGE SOURCE</label>
                         <input type="text" name="about_image" form="cms-master-form" class="cms-input" value="<?php echo htmlspecialchars($about_image); ?>" oninput="document.getElementById('about_preview').src = this.value">
-                        <img id="about_preview" src="<?php echo htmlspecialchars($about_image); ?>" style="width:100%; height:120px; object-fit:cover; border-radius:16px; margin-top:1rem; border:1px solid var(--cms-border);">
+                        <img id="about_preview" src="<?php echo htmlspecialchars($about_image); ?>" style="width:100%; height:80px; object-fit:cover; border-radius:12px; margin-top:0.8rem; border:1px solid var(--cms-border);">
+                    </div>
+                    <div class="input-group" style="margin-top:1.5rem;">
+                        <label>VIDEO OVERLAY (MP4)</label>
+                        <input type="text" name="about_video" form="cms-master-form" class="cms-input" value="<?php echo htmlspecialchars($about_video ?? ''); ?>" placeholder="https://example.com/video.mp4">
                     </div>
                 </div>
 

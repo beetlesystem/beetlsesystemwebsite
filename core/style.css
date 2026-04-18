@@ -269,7 +269,7 @@ nav {
 
 nav.scrolled {
     padding: 1.2rem 5%;
-    background: rgba(229, 227, 211, 0.8);
+    background: rgba(229, 227, 211);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
@@ -292,9 +292,9 @@ nav.scrolled {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+   
     transition: all 0.4s var(--transition);
-    border: 1px solid rgba(0, 0, 0, 0.05);
+    
     animation: heartbeat 1.5s infinite;
 }
 
@@ -303,27 +303,26 @@ nav.scrolled {
     0%,
     100% {
         transform: scale(1);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        
     }
 
     10% {
         transform: scale(1.1);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+
     }
 
     20% {
         transform: scale(1);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+
     }
 
     30% {
         transform: scale(1.1);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     }
 
     40% {
         transform: scale(1);
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      
     }
 }
 
@@ -811,9 +810,14 @@ nav.scrolled {
     width: 100%;
     height: 600px;
     overflow: hidden;
-    border-radius: 4px;
+    border-radius: 6px;
     perspective: 1500px;
+    position: relative;
     /* Enable 3D Depth */
+}
+
+.img-reveal-wrapper:hover img {
+    filter: brightness(0.5) grayscale(0.3);
 }
 
 .img-reveal-wrapper img {
@@ -829,6 +833,39 @@ nav.scrolled {
     will-change: transform, filter;
 }
 
+.img-reveal-wrapper:hover .video-overlay {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.about-stats {
+    display: flex;
+    gap: 4rem;
+    margin-top: 4rem;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-num {
+    font-family: var(--font-heading);
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--accent);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.5;
+    margin-top: 0.5rem;
+}
+
 
 
 /* Services */
@@ -839,9 +876,14 @@ nav.scrolled {
 }
 
 .service-card {
-    padding: 4rem 2rem;
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 0;
+    padding: 2rem 1rem;
+    
+   border-radius: 6px;
+  
+     background: var(--bg-secondary);
+    color: var(--text-secondary);
+    transform: translateY(-10px);
+  
     transition: all .6s ease-in-out;
 }
 
@@ -863,6 +905,7 @@ nav.scrolled {
 .service-card h3 {
     font-family: var(--font-heading);
     font-size: 2rem;
+    color: var(--accent);
     margin-bottom: 1rem;
 }
 
@@ -1006,6 +1049,7 @@ nav.scrolled {
 .price-card {
     padding: 4rem 3rem;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
     position: relative;
     background: transparent;
     transition: all 0.4s var(--transition);
@@ -1116,7 +1160,7 @@ nav.scrolled {
 
 .btn-solid {
     background: var(--accent);
-    color: var(--text-primary);
+    color: var(--bg-primary);
 }
 
 .btn-outline:hover {
@@ -1262,7 +1306,7 @@ nav.scrolled {
     font-family: var(--font-heading);
     font-size: 2rem;
     font-weight: 700;
-    margin-bottom: 0.4rem;
+    margin-bottom: 1rem;
 }
 
 .team-role {
@@ -1362,7 +1406,7 @@ nav.scrolled {
     background: var(--bg-secondary);
     padding: 4rem;
     color: var(--text-secondary);
-    border-radius: 40px 10px 40px 10px;
+    border-radius: 6px;
 }
 
 .modern-form .form-row {
@@ -1383,7 +1427,7 @@ nav.scrolled {
     display: block;
     font-size: 0.65rem;
     font-weight: 900;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.2rem;
     letter-spacing: 3px;
     opacity: 0.4;
     transition: all 0.4s;
@@ -2289,9 +2333,7 @@ body.menu-open {
         font-size: 0.9rem;
     }
 
-    .subheading {
-        font-size: 0.7rem;
-    }
+    
 
     .hero-bg-content {
         width: 100%;
@@ -2361,7 +2403,7 @@ h2 span {
 .reveal-active .subheading span,
 .reveal-active h2 span {
     transform: translateY(0);
-        margin-bottom: 20px;
+        margin-bottom: 40px;
 }
 
 /* Image Mask Reveal */
@@ -3086,20 +3128,13 @@ h2 span {
     flex-direction: column;
 }
 
-.stat-num {
-    font-family: var(--font-heading);
-    font-size: 3.5rem;
-    font-weight: 900;
-    color: white;
-    line-height: 1;
-    margin-bottom: 1rem;
-}
+
 
 .stat-label {
     font-size: 0.6rem;
     font-weight: 900;
     letter-spacing: 3px;
-    color: var(--accent);
+    color: var(--bg-secondary);
 }
 
 /* Blueprint Section */
@@ -4672,6 +4707,7 @@ h2 span {
 
 .transmit-btn {
     display: inline-flex;
+    justify-content: center;
     align-items: center;
     gap: 1.5rem;
     padding: 1.2rem 3rem;

@@ -8,12 +8,14 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
     $about_image = $_POST['about_image'] ?? '';
+    $about_video = $_POST['about_video'] ?? '';
     $pk_starter = json_encode($_POST['package_starter'] ?? []);
     $pk_premium = json_encode($_POST['package_premium'] ?? []);
     $pk_enterprise = json_encode($_POST['package_enterprise'] ?? []);
 
     $updates = [
         'about_image' => $about_image,
+        'about_video' => $about_video,
         'package_starter' => $pk_starter,
         'package_premium' => $pk_premium,
         'package_enterprise' => $pk_enterprise

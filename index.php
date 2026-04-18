@@ -10,6 +10,7 @@ $home_testimonials = $pdo->query("SELECT * FROM testimonials WHERE status = 'fea
 // Fetch CMS Settings
 $settings = $pdo->query("SELECT setting_key, setting_value FROM site_settings")->fetchAll(PDO::FETCH_KEY_PAIR);
 $about_image = $settings['about_image'] ?? 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200';
+$about_video = $settings['about_video'] ?? '';
 $pk_starter = json_decode($settings['package_starter'] ?? '[]', true) ?: ["Custom UI/UX Design","7 days Maintenance Support","Secure Hosting (HTTPS Enabled)","SEO-Friendly Structure"];
 $pk_premium = json_decode($settings['package_premium'] ?? '[]', true) ?: ["Dashboard-CMS/Admin Panel","Advanced SEO","Interactive Features","15 Days Maintenance Support"];
 $pk_enterprise = json_decode($settings['package_enterprise'] ?? '[]', true) ?: ["E-commerce Platforms","Custom CRM & Business Systems","Billing & Invoicing Automation","Scalable Web Applications"];
@@ -65,14 +66,29 @@ include 'includes/pageheader.php';
                 <span class="subheading"><span>01 / WHO WE ARE</span></span>
                 <div class="about-grid">
                     <div class="about-text reveal-from-left">
-                        <h2><span>We build digital interfaces that define the future.</span></h2>
-                        <p>Beetle System is a boutique digital agency focused on creating immersive experiences. We
-                            merge technical precision with aesthetic excellence to deliver results that wow.</p>
+                        <h2><span>Architecting the next generation of digital identity.</span></h2>
+                        <p>Beetle System is a high-performance digital forge dedicated to engineering the future of web experiences. We don't just build websites; we craft digital ecosystems that combine technical precision with radical, avant-garde aesthetics to dominate the digital landscape.</p>
+                        <div class="about-stats">
+                            <div class="stat-item">
+                                <span class="stat-num">99%</span>
+                                <span class="stat-label">Performance Score</span>
+                            </div>
+                            <div class="stat-item">
+                                <span class="stat-num">50+</span>
+                                <span class="stat-label">Projects Launched</span>
+                            </div>
+                        </div>
                     </div>
                     <div class="about-image reveal-from-right">
                         <div class="img-reveal-wrapper">
-                            <img src="<?php echo htmlspecialchars($about_image); ?>"
-                                alt="Office Space">
+                            <img src="<?php echo htmlspecialchars($about_image); ?>" alt="Office Space">
+                            <?php if (!empty($about_video)): ?>
+                                <div class="video-overlay">
+                                    <video autoplay muted loop playsinline preload="auto" class="hover-video">
+                                        <source src="<?php echo htmlspecialchars($about_video); ?>" type="video/mp4">
+                                    </video>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -364,7 +380,7 @@ include 'includes/pageheader.php';
                                     placeholder="Describe your experience with our services..." required></textarea>
                             </div>
 
-                            <button type="submit" class="transmit-btn submit-btn magnetic">
+                            <button type="submit" class="submit-btn transmit-btn magnetic">
                                 <span class="btn-content">
                                     SUBMIT FEEDBACK
                                 </span>
