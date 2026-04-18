@@ -1,16 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- Initialize Lenis ---
-    const lenis = new Lenis({
-        autoRaf: true,
-    });
+    let lenis;
+    if (typeof Lenis !== 'undefined') {
+        lenis = new Lenis({
+            autoRaf: true,
+        });
+    }
 
     // Elements
     const curtainTop = document.getElementById('curtain-top');
     const curtainBottom = document.getElementById('curtain-bottom');
     const heroWrapper = document.getElementById('hero');
     const navbar = document.getElementById('navbar');
-    const cursor = document.getElementById('cursor');
-    const follower = document.getElementById('cursor-follower');
     const revealH1 = document.querySelector('.reveal-h1');
     const cycleWrapper = document.querySelector('.hero-cycle-wrapper');
     const cyclePhrases = document.querySelectorAll('.cycle-phrase');
@@ -23,14 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Mobile Menu Toggle ---
     const openMenu = () => {
-        lenis.stop();
+        lenis?.stop();
         navToggle.classList.add('active');
         mobileMenu.classList.add('active');
         document.body.classList.add('menu-open');
     };
 
     const closeMenu = () => {
-        lenis.start();
+        lenis?.start();
         navToggle.classList.remove('active');
         mobileMenu.classList.remove('active');
         document.body.classList.remove('menu-open');
@@ -59,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const size = 6 - (i * 0.5);
         dot.style.width = `${size}px`;
         dot.style.height = `${size}px`;
-        dot.style.opacity = (1 - (i / dotCount)).toString();
+        dot.style.opacity = "1";
         document.body.appendChild(dot);
         cursorDots.push({ el: dot, x: 0, y: 0 });
     }
@@ -68,14 +69,36 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        if (cursor) {
-            cursor.style.left = `${mouseX}px`;
-            cursor.style.top = `${mouseY}px`;
+
+        // --- Magnetic/Parallax Image Effect for Projects ---
+        const activeProject = document.querySelector('.project-item:hover');
+        if (activeProject) {
+            const img = activeProject.querySelector('img');
+            const rect = activeProject.getBoundingClientRect();
+            const xRel = (mouseX - rect.left) / rect.width - 0.5;
+            const yRel = (mouseY - rect.top) / rect.height - 0.5;
+            
+            // Subtle movement: shift image by 20px max
+            gsap.to(img, {
+                x: xRel * 40,
+                y: yRel * 40,
+                duration: 0.6,
+                ease: 'power2.out'
+            });
         }
-        if (follower) {
-            follower.style.left = `${mouseX}px`;
-            follower.style.top = `${mouseY}px`;
-        }
+    });
+
+    // Reset project image position on mouse leave
+    document.querySelectorAll('.project-item').forEach(item => {
+        item.addEventListener('mouseleave', () => {
+            const img = item.querySelector('img');
+            gsap.to(img, {
+                x: 0,
+                y: 0,
+                duration: 0.6,
+                ease: 'power2.out'
+            });
+        });
     });
 
     const renderCursor = () => {
@@ -102,8 +125,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const addCursorHover = () => {
         const hoverElements = document.querySelectorAll('a, button, .project-item, .service-card, .social-icon, .back-to-top');
         hoverElements.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            el.addEventListener('mouseenter', () => {
+                document.body.classList.add('cursor-hover');
+                if(el.classList.contains('project-item')) {
+                    document.body.classList.add('cursor-project');
+                }
+            });
+            el.addEventListener('mouseleave', () => {
+                document.body.classList.remove('cursor-hover');
+                document.body.classList.remove('cursor-project');
+            });
         });
     };
     addCursorHover();
@@ -116,7 +147,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (targetId === '#') return;
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
-                lenis.scrollTo(targetElement);
+                if (lenis) {
+                    lenis.scrollTo(targetElement);
+                } else {
+                    targetElement.scrollIntoView({ behavior: 'smooth' });
+                }
             }
         });
     });
@@ -124,7 +159,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Back to Top ---
     if (backToTop) {
         backToTop.addEventListener('click', () => {
-            lenis.scrollTo(0);
+            if (lenis) {
+                lenis.scrollTo(0);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
         });
     }
 
@@ -161,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // 4. Image Parallax
-        document.querySelectorAll('.img-reveal-wrapper img, .project-img img').forEach(img => {
+        document.querySelectorAll('.img-reveal-wrapper img, .project-img img, .project-visual img').forEach(img => {
             const rect = img.parentElement.getBoundingClientRect();
             if (rect.top < viewportHeight && rect.bottom > 0) {
                 const distance = viewportHeight + rect.height;
@@ -187,6 +226,32 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
+
+    // --- Magnetic Effect ---
+    const updateMagnetic = () => {
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', (e) => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                gsap.to(btn, {
+                    x: x * 0.35,
+                    y: y * 0.35,
+                    duration: 0.4,
+                    ease: "power2.out"
+                });
+            });
+            btn.addEventListener('mouseleave', () => {
+                gsap.to(btn, {
+                    x: 0,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "elastic.out(1, 0.3)"
+                });
+            });
+        });
+    };
+    updateMagnetic();
 
     // --- Hero Ticker (Seamless vertical slot-machine) ---
     const cycleTrack = document.getElementById('cycle-track');
@@ -397,12 +462,12 @@ document.addEventListener('DOMContentLoaded', () => {
         modalList.innerHTML = data.features.map(f => `<li>${f}</li>`).join('');
 
         modal.classList.add('active');
-        lenis.stop();
+        lenis?.stop();
     };
 
     const closeModal = () => {
         modal.classList.remove('active');
-        lenis.start();
+        lenis?.start();
     };
 
     document.querySelectorAll('.view-details').forEach(btn => {
@@ -461,12 +526,12 @@ document.addEventListener('DOMContentLoaded', () => {
         fbIcon.className = 'feedback-icon' + (type === 'error' ? ' error' : '');
         
         fbModal.classList.add('active');
-        lenis.stop();
+        lenis?.stop();
     };
 
     const closeFeedback = () => {
         fbModal.classList.remove('active');
-        lenis.start();
+        lenis?.start();
     };
 
     if (fbClose) fbClose.addEventListener('click', closeFeedback);
@@ -486,7 +551,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const btn = reviewForm.querySelector('.submit-btn');
             const originalContent = btn.innerHTML;
 
-            btn.innerHTML = 'TRANSMITTING...';
+            btn.innerHTML = 'SUBMITTING...';
             btn.style.pointerEvents = 'none';
 
             const formData = new FormData();
@@ -498,19 +563,22 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('controller/testimonials/submit.php', {
                     method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': window.beetleCMS.csrfToken
+                    },
                     body: formData
                 });
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    showFeedback('Transmission Complete', result.message);
+                    showFeedback('Success', result.message);
                     reviewForm.reset();
                     document.querySelectorAll('.star-rating input').forEach(radio => radio.checked = false);
                 } else {
-                    showFeedback('System Log', result.message, 'error');
+                    showFeedback('Notification', result.message, 'error');
                 }
             } catch (error) {
-                showFeedback('Signal Lost', 'Neural link disrupted. Please try again later.', 'error');
+                showFeedback('Submission Failed', 'An error occurred. Please try again later.', 'error');
             } finally {
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'all';
@@ -532,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formData.append('subject', document.getElementById('contact-subject').value);
             formData.append('message', document.getElementById('contact-message').value);
 
-            btn.innerHTML = 'SENDING MESSAGE...';
+            btn.innerHTML = 'SUBMITTING...';
             btn.style.pointerEvents = 'none';
             btn.style.opacity = '0.7';
 
@@ -544,13 +612,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    showFeedback('Transmission Complete', 'Thank you! Your inquiry has been received. Our team will contact you shortly.');
+                    showFeedback('Success', 'Thank you! Your inquiry has been received. Our team will contact you shortly.');
                     mainContactForm.reset();
                 } else {
-                    showFeedback('System Error', result.message, 'error');
+                    showFeedback('Error', result.message, 'error');
                 }
             } catch (error) {
-                showFeedback('Signal Failure', 'An error occurred during transmission. Please try again later.', 'error');
+                showFeedback('Error', 'An error occurred. Please try again later.', 'error');
             } finally {
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'all';
@@ -585,7 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e) e.preventDefault();
         if (contactModal) {
             contactModal.classList.add('active');
-            lenis.stop();
+            lenis?.stop();
             updateStep(1);
         }
     };
@@ -593,7 +661,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const closeContactModal = () => {
         if (contactModal) {
             contactModal.classList.remove('active');
-            lenis.start();
+            lenis?.start();
         }
     };
 
@@ -710,12 +778,15 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await fetch('controller/clients/submit.php', {
                     method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': window.beetleCMS.csrfToken
+                    },
                     body: formData
                 });
                 const result = await response.json();
 
                 if (result.status === 'success') {
-                    showFeedback('Project Initiated', 'Inquiry received! Our team will review your project details and get back to you within 24 hours.');
+                    showFeedback('Success', 'Inquiry received! Our team will review your project details and get back to you within 24 hours.');
                     closeContactModal();
                     msForm.reset();
                     catItems.forEach(i => i.classList.remove('selected'));
@@ -724,10 +795,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (subPlaceholder) subPlaceholder.style.display = 'block';
                     updateStep(1);
                 } else {
-                    showFeedback('Capture Error', result.message, 'error');
+                    showFeedback('Error', result.message, 'error');
                 }
             } catch (error) {
-                showFeedback('Network Disruption', 'An error occurred. Please check your connection and try again.', 'error');
+                showFeedback('Connection Error', 'An error occurred. Please check your connection and try again.', 'error');
             } finally {
                 btn.innerHTML = originalContent;
                 btn.style.pointerEvents = 'all';
@@ -755,13 +826,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Tilt & Parallax using GSAP for buttery smooth easing
             gsap.to(img, {
-                duration: 0.6,
+                duration: 0.4,
                 x: deltaX * 30, // Parallax slide
                 y: deltaY * 30,
                 rotateY: deltaX * 12, // Subtle 3D tilt
                 rotateX: -deltaY * 12,
                 scale: 1.15,
-                filter: 'grayscale(0) brightness(1)',
+              
                 ease: "power2.out",
                 overwrite: true
             });
@@ -769,13 +840,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         container.addEventListener('mouseleave', () => {
             gsap.to(img, {
-                duration: 0.8,
+                duration: 0.4,
                 x: 0,
                 y: 0,
                 rotateX: 0,
                 rotateY: 0,
                 scale: 1,
-                filter: 'grayscale(1) brightness(0.8)',
+               
                 ease: "power3.out",
                 overwrite: true
             });
@@ -978,4 +1049,80 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Ultra-Minimalist Project Portal Logic ---
+    const projectItems = document.querySelectorAll('.project-minimal-item');
+    const floatingPortal = document.getElementById('floating-project-portal');
+    const portalImg = document.getElementById('portal-img');
+    const portalVideo = document.getElementById('portal-video');
+
+    if (projectItems.length > 0 && floatingPortal) {
+        let pMouseX = 0, pMouseY = 0;
+        let pTargetX = 0, pTargetY = 0;
+        let isPortalActive = false;
+
+        document.addEventListener('mousemove', (e) => {
+            pMouseX = e.clientX;
+            pMouseY = e.clientY;
+        });
+
+        projectItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                const img = item.getAttribute('data-img');
+                const video = item.getAttribute('data-video');
+
+                if (img) portalImg.src = img;
+                if (video) {
+                    portalVideo.src = video;
+                    portalVideo.style.display = 'block';
+                    portalImg.style.display = 'none';
+                    portalVideo.play();
+                } else {
+                    portalVideo.style.display = 'none';
+                    portalImg.style.display = 'block';
+                }
+
+                floatingPortal.classList.add('active');
+                isPortalActive = true;
+            });
+
+            item.addEventListener('mouseleave', () => {
+                floatingPortal.classList.remove('active');
+                isPortalActive = false;
+            });
+        });
+
+        const updatePortal = () => {
+            // Smooth lerp (linear interpolation) for the portal position
+            pTargetX += (pMouseX - pTargetX) * 0.12;
+            pTargetY += (pMouseY - pTargetY) * 0.12;
+
+            // Offset the portal so it centers on the cursor
+            const offsetX = floatingPortal.offsetWidth / 2;
+            const offsetY = floatingPortal.offsetHeight / 2;
+
+            floatingPortal.style.transform = `translate(${pTargetX - offsetX}px, ${pTargetY - offsetY}px) scale(${isPortalActive ? 1 : 0.5})`;
+            
+            requestAnimationFrame(updatePortal);
+        };
+        updatePortal();
+    }
+
+    // --- Footer CTA Spotlight Interaction ---
+    const ctaPortal = document.querySelector('.footer-cta-portal');
+    const ctaSpotlight = document.getElementById('cta-spotlight');
+
+    if (ctaPortal && ctaSpotlight) {
+        ctaPortal.addEventListener('mousemove', (e) => {
+            const rect = ctaPortal.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            gsap.to(ctaSpotlight, {
+                left: x,
+                top: y,
+                duration: 0.6,
+                ease: 'power3.out'
+            });
+        });
+    }
 });

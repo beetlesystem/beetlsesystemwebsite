@@ -2,33 +2,51 @@
 
 <body class="inner-page">
     <div class="grain"></div>
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
 
     <?php include '../includes/loader.php'; ?>
     <?php include '../includes/navigation.php'; ?>
 
-
+    <!-- Page Curtain Reveal -->
+    <div class="page-curtain-top"></div>
+    <div class="page-curtain-bottom"></div>
 
     <main>
-        <section class="page-hero">
+        <!-- Editorial About Hero -->
+        <section class="section about-editorial-hero">
             <div class="container">
-                <span class="subheading"><span>BEYOND THE INTERFACE</span></span>
-                <h1 class="reveal-from-left">Our Mission is to <br><span class="accent-text">Redefine Digital.</span></h1>
+                <div class="about-hero-branding reveal-from-bottom">
+                    <span class="subheading"><span>OUR STORY</span></span>
+                    <h1>We build digital tools that <br><span class="accent-text">help your business grow.</span></h1>
+                </div>
             </div>
         </section>
 
-        <section class="section">
+        <!-- The Story Section -->
+        <section class="section editorial-story-section">
             <div class="container">
-                <div class="about-detailed-grid">
-                    <div class="about-content reveal-from-left">
-                        <h2>The Philosophy</h2>
-                        <p>At Beetle System, we don't just build websites; we craft digital ecosystems. Our approach is rooted in the belief that every line of code should serve a purpose and every pixel should tell a story. We bridge the gap between human intuition and technical precision.</p>
-                        <p>Born from a passion for minimalist design and robust engineering, we help brands navigate the complex digital landscape with clarity and confidence.</p>
-                    </div>
-                    <div class="about-visual reveal-from-right">
+                <div class="story-layout">
+                    <div class="story-image reveal-from-left">
                         <div class="img-reveal-wrapper">
-                            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=1200" alt="Team Collaboration">
+                            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=2301" alt="Studio Architecture">
+                        </div>
+                    </div>
+                    
+                    <div class="story-content reveal-from-right">
+                        <div class="about-body">
+                            <h2>The Philosophy</h2>
+                            <p>At Beetle System, we do more than just build websites. We create digital tools that help your business grow. We believe that good design should be simple, and good code should be powerful.</p>
+                            <p>We started with a passion for clean design. Today, we help brands all over the world make a great impression online with confidence.</p>
+                        </div>
+
+                        <div class="about-stats-grid-simple">
+                            <div class="stat-item magnetic">
+                                <span class="stat-num">10+</span>
+                                <span class="stat-label">YEARS EXPERIENCE</span>
+                            </div>
+                            <div class="stat-item magnetic">
+                                <span class="stat-num">50+</span>
+                                <span class="stat-label">HAPPY CLIENTS</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,20 +57,61 @@
             <div class="container">
                 <span class="subheading"><span>OUR CORE VALUES</span></span>
                 <div class="values-grid">
-                    <div class="value-card reveal-from-bottom">
+                    <div class="value-card reveal-from-bottom magnetic">
                         <span class="value-num">01</span>
                         <h3>Precision</h3>
                         <p>We sweat the small stuff. From pixel-perfect layouts to optimized server response times, quality is non-negotiable.</p>
                     </div>
-                    <div class="value-card reveal-from-bottom delay-1">
+                    <div class="value-card reveal-from-bottom delay-1 magnetic">
                         <span class="value-num">02</span>
                         <h3>Innovation</h3>
                         <p>We stay at the bleeding edge of web technology, ensuring your project is built for the future.</p>
                     </div>
-                    <div class="value-card reveal-from-bottom delay-2">
+                    <div class="value-card reveal-from-bottom delay-2 magnetic">
                         <span class="value-num">03</span>
                         <h3>Empathy</h3>
                         <p>We build for humans. Our user-centric design process ensures that your audience feels heard and understood.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Methodology Section: The Blueprint -->
+        <section class="section blueprint-section">
+            <div class="container">
+                <div class="blueprint-header reveal-from-bottom">
+                    <span class="subheading"><span>OUR PROCESS</span></span>
+                    <h2>How we <br><span class="accent-text">Work.</span></h2>
+                </div>
+
+                <div class="blueprint-grid">
+                    <div class="blueprint-item reveal-from-bottom">
+                        <span class="b-step">01.</span>
+                        <div class="b-content">
+                            <h3>PLANNING</h3>
+                            <p>We talk about your goals and create a clear plan for your project.</p>
+                        </div>
+                    </div>
+                    <div class="blueprint-item reveal-from-bottom delay-1">
+                        <span class="b-step">02.</span>
+                        <div class="b-content">
+                            <h3>STRATEGY</h3>
+                            <p>We build the technical foundation to make sure everything runs smoothly.</p>
+                        </div>
+                    </div>
+                    <div class="blueprint-item reveal-from-bottom delay-2">
+                        <span class="b-step">03.</span>
+                        <div class="b-content">
+                            <h3>DESIGN</h3>
+                            <p>We create beautiful and easy-to-use interfaces for your audience.</p>
+                        </div>
+                    </div>
+                    <div class="blueprint-item reveal-from-bottom delay-3">
+                        <span class="b-step">04.</span>
+                        <div class="b-content">
+                            <h3>LAUNCH</h3>
+                            <p>We test everything carefully and launch your new website to the world.</p>
+                        </div>
                     </div>
                 </div>
             </div>

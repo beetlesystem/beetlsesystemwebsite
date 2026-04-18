@@ -2,36 +2,52 @@
 session_start();
 require_once '../core/db.php';
 require_once '../model/User.php';
+require_once '../core/csrf.php';
 
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $admin_id = $_POST['admin_id'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    if (empty($admin_id) || empty($password)) {
-        $error = 'Please enter both Administrator ID and Passphrase.';
+    csrf_verify(false);
+    
+    // Verify CAPTCHA
+    $captcha_input = $_POST['captcha'] ?? '';
+    if (empty($captcha_input) || (int)$captcha_input !== ($_SESSION['captcha_ans'] ?? -1)) {
+        $error = 'Human verification failed. Correct calculation required.';
     } else {
-        $userModel = new User($pdo);
-        $user = $userModel->login($admin_id, $password);
+        $admin_id = $_POST['admin_id'] ?? '';
+        $password = $_POST['password'] ?? '';
 
-        if ($user) {
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['admin_id'] = $user['admin_id'];
-            $_SESSION['full_name'] = $user['full_name'];
-            
-            // Set a persistence cookie if needed (optional, but requested)
-            setcookie('auth_beetle', base64_encode($user['admin_id']), time() + (86400 * 30), "/"); // 30 days
-
-            header("Location: /beetlesystem/dashboard");
-            exit;
+        if (empty($admin_id) || empty($password)) {
+            $error = 'Please enter both Administrator ID and Passphrase.';
         } else {
-            $error = 'Invalid Administrator ID or Passphrase.';
+            $userModel = new User($pdo);
+            $user = $userModel->login($admin_id, $password);
+
+            if ($user) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['admin_id'] = $user['admin_id'];
+                $_SESSION['full_name'] = $user['full_name'];
+                
+                // Set a secure persistence cookie
+                $signature = hash_hmac('sha256', $user['admin_id'], SITE_KEY);
+                $cookie_value = base64_encode($user['admin_id'] . '|' . $signature);
+                setcookie('auth_beetle', $cookie_value, time() + (86400 * 30), "/"); 
+
+                header("Location: /beetlesystem/dashboard");
+                exit;
+            } else {
+                $error = 'Invalid Administrator ID or Passphrase.';
+            }
         }
     }
 }
 
-// Redirect if already logged in
+
+// Generate Math Captcha
+$num1 = rand(1, 9);
+$num2 = rand(1, 9);
+$_SESSION['captcha_ans'] = $num1 + $num2;
+
 if (isset($_SESSION['user_id'])) {
     header("Location: /beetlesystem/dashboard");
     exit;
@@ -201,22 +217,23 @@ if (isset($_SESSION['user_id'])) {
                         <path d="M45 20 C40 10 35 15 30 10 M55 20 C60 10 65 15 70 10" fill="none" stroke="currentColor" stroke-width="2" />
                     </svg>
                 </a>
-                <h1 class="login-title">WELCOME BACK.</h1>
-                <p style="opacity:0.5; font-size: 0.9rem; margin-top: 0.5rem;">ENTER YOUR CREDENTIALS TO ACCESS THE SYSTEM</p>
+                <h1 class="login-title">LOGIN.</h1>
+                <p style="opacity:0.5; font-size: 0.9rem; margin-top: 0.5rem;">PLEASE ENTER YOUR DETAILS TO CONTINUE</p>
             </div>
 
             <form class="login-form" method="POST" action="">
+                <?php echo csrf_field(); ?>
                 <?php if ($error): ?>
                     <div class="error-msg" style="background: rgba(255,0,0,0.05); color: #ff4444; padding: 0.8rem; border-radius: 8px; font-size: 0.8rem; border: 1px solid rgba(255,0,0,0.1); text-align: center;">
                         <?php echo $error; ?>
                     </div>
                 <?php endif; ?>
                 <div class="form-group" style="margin-bottom: 0;">
-                    <label style="font-size:0.6rem; letter-spacing: 2px; font-weight: 900; opacity: 0.5;">ADMINISTRATOR ID</label>
+                    <label style="font-size:0.6rem; letter-spacing: 2px; font-weight: 900; opacity: 0.5;">ADMIN ID</label>
                     <input type="text" name="admin_id" placeholder="AD-000-X" required style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); padding: 1rem; border-radius: 8px; width: 100%; font-family: var(--font-main);">
                 </div>
                 <div class="form-group" style="margin-bottom: 0;">
-                    <label style="font-size:0.6rem; letter-spacing: 2px; font-weight: 900; opacity: 0.5;">SECURE PASSPHRASE</label>
+                    <label style="font-size:0.6rem; letter-spacing: 2px; font-weight: 900; opacity: 0.5;">PASSWORD</label>
                     <div class="password-wrapper">
                         <input type="password" name="password" id="login-password" placeholder="••••••••" required style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); padding: 1rem; padding-right: 45px; border-radius: 8px; width: 100%; font-family: var(--font-main);">
                         <button type="button" class="password-toggle" id="toggle-password" aria-label="Toggle password visibility">
@@ -228,24 +245,25 @@ if (isset($_SESSION['user_id'])) {
                     </div>
                 </div>
 
-                <!-- CAPTCHA Placeholder -->
-                <div id="captcha-container" class="captcha-placeholder">
-                    [ CAPTCHA PLACEHOLDER ]
+                <!-- CAPTCHA -->
+                <div class="form-group" style="margin-bottom: 0;">
+                    <label style="font-size:0.6rem; letter-spacing: 2px; font-weight: 900; opacity: 0.5;">SECURITY CHECK: <?php echo "$num1 + $num2 = ?"; ?></label>
+                    <input type="number" name="captcha" placeholder="Result" required style="background: rgba(0,0,0,0.02); border: 1px solid rgba(0,0,0,0.1); padding: 1rem; border-radius: 8px; width: 100%;">
                 </div>
 
                 <button type="submit" class="submit-btn group" style="width:100%; margin-top: 1rem; padding: 1.2rem;">
-                    AUTHORIZE ACCESS
+                    LOGIN
                 </button>
             </form>
 
             <div class="form-footer">
-                <p>Lost your credentials? <a href="/beetlesystem/contact">Contact Headquarters</a></p>
+                <p>Forgot password? <a href="/beetlesystem/contact">Contact Support</a></p>
                 <a href="/beetlesystem/" style="display: block; margin-top: 2rem; font-size: 0.7rem; letter-spacing: 2px;">← BACK TO HOME</a>
             </div>
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/lenis@latest/dist/lenis.min.js"></script>
+
     <script src="core/main.js"></script>
     <script>
         // Password Visibility Toggle Logic

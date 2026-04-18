@@ -1,9 +1,11 @@
 <?php
 require_once '../../core/auth_check.php';
 require_once '../../core/db.php';
+require_once '../../core/csrf.php';
 
 // Handle Actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify(false);
     if (isset($_POST['toggle_featured'])) {
         $id = $_POST['review_id'];
         $stmt = $pdo->prepare("UPDATE testimonials SET status = CASE WHEN status = 'featured' THEN 'pending' ELSE 'featured' END WHERE id = ?");
@@ -41,7 +43,7 @@ $avg_rating = round($avg_rating, 1);
     <link rel="stylesheet" href="core/style.css">
     <link rel="icon" type="image/svg+xml" href="core/favicon.svg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lenis@latest/dist/lenis.min.js"></script>
+
     <script src="core/main.js"></script>
 </head>
 <body class="admin-layout">
@@ -63,15 +65,15 @@ $avg_rating = round($avg_rating, 1);
         </div>
 
         <!-- Sophisticated Analytics Header -->
-        <div style="display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
             <!-- Main Score Board -->
-            <div style="background: #F8F6EF; border-radius: 16px; padding: 2.5rem; display: flex; align-items: center; gap: 3rem; box-shadow: 0 10px 40px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.04);">
+            <div style="background: #F8F6EF; border-radius: 16px; padding: 2rem; display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; box-shadow: 0 10px 40px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.04);">
                 <div style="text-align:center;">
                     <div style="font-size: 5rem; font-weight: 900; line-height: 1; color: var(--text-primary); font-family: var(--font-heading);"><?php echo $avg_rating; ?></div>
                     <div style="font-size: 0.65rem; font-weight: 800; color: #888; letter-spacing: 2px; margin-top: 0.5rem; text-transform: uppercase;">System Average</div>
                 </div>
-                <div style="flex:1; border-left: 1px solid rgba(0,0,0,0.08); padding-left: 3rem;">
-                    <div style="color: var(--accent); font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; gap: 0.3rem;">
+                <div style="flex:1; border-left: 1px solid rgba(0,0,0,0.08);">
+                    <div style="color: var(--accent); font-size: 1.8rem; margin-bottom: 0.5rem; display: flex; gap: 0.2rem;">
                         <?php 
                         $full_stars = floor($avg_rating);
                         for($i=0; $i<5; $i++) {
@@ -157,6 +159,7 @@ $avg_rating = round($avg_rating, 1);
             <p id="confirmDesc" style="font-size:0.9rem; color:#666; margin-bottom:2rem; line-height:1.5;"></p>
             
             <form method="POST" id="confirmForm">
+                <?php echo csrf_field(); ?>
                 <input type="hidden" name="review_id" id="targetId">
                 <input type="hidden" name="" id="targetAction" value="1">
                 <div style="display:flex; gap:1rem;">

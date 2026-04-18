@@ -5,9 +5,9 @@ require_once '../../core/db.php';
 // Fetch all settings
 $settings = $pdo->query("SELECT setting_key, setting_value FROM site_settings")->fetchAll(PDO::FETCH_KEY_PAIR);
 $about_image = $settings['about_image'] ?? '';
-$pk_starter = json_decode($settings['package_starter'] ?? '[]', true);
-$pk_premium = json_decode($settings['package_premium'] ?? '[]', true);
-$pk_enterprise = json_decode($settings['package_enterprise'] ?? '[]', true);
+$pk_starter = array_unique(json_decode($settings['package_starter'] ?? '[]', true));
+$pk_premium = array_unique(json_decode($settings['package_premium'] ?? '[]', true));
+$pk_enterprise = array_unique(json_decode($settings['package_enterprise'] ?? '[]', true));
 
 // Fetch all reviews
 $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->fetchAll();
@@ -19,14 +19,14 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
     <meta charset="UTF-8">
     <base href="/beetlesystem/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Core Orchestrator | Beetle System CMS</title>
+    <title>Website Editor | Beetle System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Outfit:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="core/style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/lenis@latest/dist/lenis.min.js"></script>
+
 
     <style>
         :root {
@@ -49,20 +49,39 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
             overflow: hidden;
         }
 
-        /* Two-Div Structure */
-        .orchestration-terminal {
+        /* Editor Sections */
+        .editor-container {
             display: flex;
             flex: 1;
             min-height: 0;
-            gap: 1.5rem;
-            padding: 1.5rem;
+            gap: 1rem;
+            padding: 1rem;
         }
 
-        .terminal-pane {
+        @media (max-width: 1024px) {
+            .orchestration-terminal {
+                flex-direction: column;
+                overflow-y: auto;
+                height: auto;
+            }
+            .terminal-pane {
+                flex: none;
+                width: 100%;
+            }
+            .admin-main {
+                overflow-y: auto;
+            }
+            body, html {
+                overflow-y: auto;
+                height: auto;
+            }
+        }
+
+        .editor-pane {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
             min-width: 0;
         }
 
@@ -71,7 +90,7 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
             background: var(--cms-card);
             border: 1px solid var(--cms-border);
             border-radius: 24px;
-            padding: 2rem;
+            padding: 1rem;
             display: flex;
             flex-direction: column;
             min-height: 0;
@@ -83,7 +102,7 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
         .cms-title {
             font-family: var(--font-heading); font-size: 0.75rem; font-weight: 900;
             letter-spacing: 2px; display: flex; align-items: center; gap: 0.8rem;
-            color: #111; text-transform: uppercase; margin-bottom: 1.5rem; flex-shrink: 0;
+            color: #111; text-transform: uppercase; margin-bottom: 1rem; flex-shrink: 0;
         }
         .cms-title i { color: var(--cms-accent); }
 
@@ -105,9 +124,9 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
         .cms-input:focus { background: #FFF; border-color: var(--cms-accent); outline: none; box-shadow: 0 5px 20px rgba(255,92,0,0.05); }
 
         /* Package Tabs */
-        .tab-row { display: flex; gap: 0.5rem; background: #F0F0F0; padding: 0.4rem; border-radius: 100px; margin-bottom: 1.5rem; align-self: flex-start; }
+        .tab-row { display: flex; gap: 0.5rem; background: #F0F0F0; padding: 0.4rem; border-radius: 9px; margin-bottom: 1rem; overflow-x: auto;  scrollbar-width: thin; scrollbar-color: rgba(0,0,0,0.1) transparent;}
         .tab-btn {
-            padding: 0.6rem 1.4rem; border-radius: 100px; font-size: 0.6rem; font-weight: 900;
+            padding: 0.6rem 1.4rem; border-radius: 9px; font-size: 0.6rem; font-weight: 900;
             color: #777; cursor: pointer; transition: 0.2s; border: none; background: transparent; text-transform: uppercase; letter-spacing: 1px;
         }
         .tab-btn.active { background: #000; color: #FFF; }
@@ -121,13 +140,13 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
 
         /* Review Specifically */
         .review-cluster { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1rem; }
-        .review-mini-card { background: #FBFBFB; border: 1px solid var(--cms-border); padding: 1.5rem; border-radius: 20px; cursor: pointer; position: relative; transition: 0.3s; }
+        .review-mini-card { background: #FBFBFB; border: 1px solid var(--cms-border); padding: 1rem; border-radius: 20px; cursor: pointer; position: relative; transition: 0.3s; }
         .review-mini-card:hover { border-color: var(--cms-accent); background: #FFF; box-shadow: 0 10px 30px rgba(0,0,0,0.03); }
         .delete-btn { position: absolute; top: 1rem; right: 1rem; color: #FF3B30; opacity: 0; transition: 0.2s; }
         .review-mini-card:hover .delete-btn { opacity: 0.3; }
         .delete-btn:hover { opacity: 1 !important; }
 
-        .sync-panel { padding: 1rem 1.5rem; background: #FFF; border-top: 1px solid var(--cms-border); display: flex; justify-content: flex-end; align-items: center; gap: 2rem; }
+        .sync-panel { padding: 1rem 1rem; background: #FFF; border-top: 1px solid var(--cms-border); display: flex; justify-content: flex-end; align-items: center; gap: 2rem; }
 
         /* Modal */
         .cms-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 2rem; }
@@ -143,24 +162,26 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
     <?php include '../../includes/aside.php'; ?>
 
     <main class="admin-main">
-        <div class="orchestration-terminal">
+        <form id="cms-master-form" style="display: contents;">
+            <?php echo csrf_field(); ?>
+            <div class="editor-container">
             
-            <!-- LEFT PANE: BRAND & PACKAGES -->
-            <div class="terminal-pane">
+            <!-- LEFT PANE -->
+            <div class="editor-pane">
                 
                 <!-- BRAND -->
                 <div class="cms-card">
-                    <h3 class="cms-title"><i class="fas fa-id-card"></i> 01 / BRAND IMAGE</h3>
+                    <h3 class="cms-title"><i class="fas fa-id-card"></i> 01 / PROFILE IMAGE</h3>
                     <div class="input-group">
                         <label>IMAGE SOURCE</label>
                         <input type="text" name="about_image" form="cms-master-form" class="cms-input" value="<?php echo htmlspecialchars($about_image); ?>" oninput="document.getElementById('about_preview').src = this.value">
-                        <img id="about_preview" src="<?php echo htmlspecialchars($about_image); ?>" style="width:100%; height:120px; object-fit:cover; border-radius:16px; margin-top:1.5rem; border:1px solid var(--cms-border);">
+                        <img id="about_preview" src="<?php echo htmlspecialchars($about_image); ?>" style="width:100%; height:120px; object-fit:cover; border-radius:16px; margin-top:1rem; border:1px solid var(--cms-border);">
                     </div>
                 </div>
 
                 <!-- PACKAGES -->
                 <div class="cms-card flex-grow">
-                    <h3 class="cms-title"><i class="fas fa-box"></i> 05 / PACKAGES</h3>
+                    <h3 class="cms-title"><i class="fas fa-box"></i> 02 / SERVICE PACKAGES</h3>
                     <div class="tab-row">
                         <button type="button" class="tab-btn active" onclick="switchPackageTab('starter', this)">Starter</button>
                         <button type="button" class="tab-btn" onclick="switchPackageTab('premium', this)">Premium</button>
@@ -207,13 +228,13 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
             </div>
 
             <!-- RIGHT PANE: REVIEWS -->
-            <div class="terminal-pane">
+            <div class="editor-pane">
                 <div class="cms-card flex-grow">
-                    <h3 class="cms-title"><i class="fas fa-star"></i> 06 / REVIEWS</h3>
+                    <h3 class="cms-title"><i class="fas fa-star"></i> 03 / CUSTOMER REVIEWS</h3>
                     
                     <!-- Injection Box -->
-                    <div style="background:#F9F9F9; padding:1.5rem; border-radius:20px; border:1px solid var(--cms-border); margin-bottom:1.5rem;">
-                        <span style="font-size:0.6rem; font-weight:900; letter-spacing:1px; color:#999; display:block; margin-bottom:1rem;">INJECTION PORTAL</span>
+                    <div style="background:#F9F9F9; padding:1rem; border-radius:20px; border:1px solid var(--cms-border); margin-bottom:1rem;">
+                        <span style="font-size:0.6rem; font-weight:900; letter-spacing:1px; color:#999; display:block; margin-bottom:1rem;">ADD NEW REVIEW</span>
                         <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1rem; margin-bottom:1rem;">
                             <input type="text" id="rev_author" class="cms-input" placeholder="Author">
                             <input type="text" id="rev_pos" class="cms-input" placeholder="Title">
@@ -224,10 +245,10 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
                             </select>
                             <textarea id="rev_content" class="cms-input" placeholder="Content" style="grid-column: span 2; height:80px; resize:none;"></textarea>
                         </div>
-                        <button type="button" class="add-action" onclick="injectReview()">INJECT SIGNAL</button>
+                        <button type="button" class="add-action" onclick="injectReview()">ADD REVIEW</button>
                     </div>
 
-                    <span style="font-size:0.6rem; font-weight:900; letter-spacing:1px; color:#999; display:block; margin-bottom:1rem;">VERIFIED ARCHIVE</span>
+                    <span style="font-size:0.6rem; font-weight:900; letter-spacing:1px; color:#999; display:block; margin-bottom:1rem;">RECENT REVIEWS</span>
                     <div class="scroll-v">
                         <div class="review-cluster">
                             <?php foreach($reviews as $r): ?>
@@ -243,15 +264,14 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
                 </div>
             </div>
 
+            </div>
+
         </div>
 
-        <!-- SYNC BAR -->
         <div class="sync-panel">
-            <span style="font-size:0.6rem; color:#999; font-weight:800; letter-spacing:1px;">COORDINATE SYNC STATUS: READY</span>
-            <form id="cms-master-form">
-                <button type="submit" class="btn-deploy">SYNC TO CORE</button>
-            </form>
+            <button type="submit" form="cms-master-form" class="add-action" style="max-width:300px;">SAVE CHANGES</button>
         </div>
+        </form>
     </main>
 
     <!-- Modal -->
@@ -293,7 +313,7 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
         }
 
         function deleteSignal(id, el) {
-            if(confirm('Exterminate signal?')) {
+            if(confirm('Delete review?')) {
                 fetch('controller/testimonials/delete.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -312,16 +332,13 @@ $reviews = $pdo->query("SELECT * FROM testimonials ORDER BY created_at DESC")->f
         document.getElementById('cms-master-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const btn = this.querySelector('button[type="submit"]');
-            btn.innerText = 'SYNCING...';
-            // Collect from other pane
-            const allInputs = document.querySelectorAll('input[form="cms-master-form"]');
+            btn.innerText = 'SAVING...';
             const fd = new FormData(this);
-            allInputs.forEach(i => fd.append(i.name, i.value));
             
             fetch('controller/cms/save.php', { method: 'POST', body: fd })
             .then(() => {
-                btn.innerText = 'SYNCED'; btn.style.background = '#28a745';
-                setTimeout(() => { btn.innerText = 'SYNC TO CORE'; btn.style.background = ''; }, 2000);
+                btn.innerText = 'SAVE CHANGES';
+                alert('Website updated successfully!');
             });
         });
     </script>

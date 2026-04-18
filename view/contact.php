@@ -7,71 +7,114 @@ include '../includes/pageheader.php';
 
 <body class="inner-page">
     <div class="grain"></div>
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
 
     <?php include '../includes/loader.php'; ?>
     <?php include '../includes/navigation.php'; ?>
 
+    <!-- Page Curtain Reveal -->
+    <div class="page-curtain-top"></div>
+    <div class="page-curtain-bottom"></div>
 
     <main>
-        <section class="page-hero">
-            <div class="container">
-                <span class="subheading"><span>CONNECTION</span></span>
-                <h1 class="reveal-from-left">Let’s build the <br><span class="accent-text">Future Together.</span></h1>
-                <p class="hero-subtext reveal-from-bottom delay-1">Have a vision? We have the precision to bring it to life. Reach out via the form below or start a custom inquiry.</p>
-            </div>
-        </section>
+        <!-- Visionary Hero & Contact Portal -->
+        <section class="section contact-visionary-section">
+            <div class="container-fluid">
+                <!-- Page Main Title -->
+                <div class="contact-main-header reveal-from-bottom">
+                    <h1>CONTACT US</h1>
+                </div>
 
-        <section class="section contact-section-bg" style="padding-top: 0;">
-            <div class="container">
-                <div class="contact-detailed-grid">
-                    <div class="contact-info-cards reveal-from-left">
-                        <div class="info-card">
-                            <span>EMAIL US</span>
-                            <a href="mailto:beetlesystem@gmail.com">beetlesystem@gmail.com</a>
+                <div class="contact-split-layout">
+                    <!-- Left: Large Typography & Info -->
+                    <div class="contact-branding-column">
+                        <div class="vertical-title">CONTACT US</div>
+                        
+                        <!-- Ghost Image Parallax -->
+                        <div class="contact-hero-image">
+                            <div class="img-reveal-wrapper">
+                                <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2426" alt="Digital Craft">
+                            </div>
                         </div>
-                        <div class="info-card">
-                            <span>CALL US</span>
-                            <a href="tel:+916005958161">+91 6005958161</a>
+
+                        <div class="contact-branding-content reveal-from-left">
+                            <div class="hero-label">GET IN TOUCH</div>
+                            <h1>Let's build <br><span class="accent-text">Together.</span></h1>
+                            
+                            <div class="branding-details">
+                                <div class="detail-group magnetic">
+                                    <span class="detail-label">EMAIL</span>
+                                    <a href="mailto:beetlesystem@gmail.com" class="detail-link">beetlesystem@gmail.com</a>
+                                </div>
+                                <div class="detail-group magnetic">
+                                    <span class="detail-label">OFFICE</span>
+                                    <p class="detail-text">Srinagar, J&K, India</p>
+                                    <a href="tel:+916005958161" class="detail-link">+91 6005958161</a> <br>
+                                    <a href="tel:+916006801960" class="detail-link">+91 6006801960</a>
+                                </div>
+                                <div class="detail-group">
+                                    <span class="detail-label">SOCIAL</span>
+                                    <div class="social-mini-flex">
+                                        <a href="#" class="magnetic">Instagram</a>
+                                        <a href="#" class="magnetic">LinkedIn</a>
+                                        <a href="#" class="magnetic">Twitter</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="info-card">
-                            <span>LOCATION</span>
-                            <p>Srinagar, Jammu & Kashmir<br>India</p>
+
+                        <!-- Scroll Indicator -->
+                        <div class="contact-scroll-hint">
+                            <div class="scroll-line"></div>
+                            <span>SCROLL TO DISCOVER</span>
                         </div>
                     </div>
 
-                    <div class="contact-form-wrapper reveal-from-right">
-                        <form id="main-contact-form" class="modern-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="contact-name">NAME</label>
+                    <!-- Right: Minimalist Form -->
+                    <div class="contact-form-column reveal-from-right">
+                        <div class="form-instruction">
+                            <span class="step-num">01</span>
+                            <p>TELL US ABOUT YOUR PROJECT GOALS AND WE'LL GET BACK TO YOU AS SOON AS POSSIBLE.</p>
+                        </div>
+
+                        <form id="main-contact-form" class="visionary-form">
+                            <div class="form-grid-inputs">
+                                <div class="v-form-group">
+                                    <label>YOUR NAME</label>
                                     <input type="text" id="contact-name" placeholder="John Doe" required>
                                 </div>
-                                <div class="form-group">
-                                    <label for="contact-email">EMAIL</label>
+                                
+                                <div class="v-form-group">
+                                    <label>YOUR EMAIL</label>
                                     <input type="email" id="contact-email" placeholder="john@example.com" required>
                                 </div>
+
+                                <div class="v-form-group">
+                                    <label>PHONE NUMBER (OPTIONAL)</label>
+                                    <input type="tel" id="contact-phone" placeholder="+91 00000 00000">
+                                </div>
+
+                                <div class="v-form-group">
+                                    <label>SUBJECT</label>
+                                    <input type="text" id="contact-subject" placeholder="Project Inquiry" required>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="contact-subject">SUBJECT</label>
-                                <input type="text" id="contact-subject" placeholder="Project Inquiry" required>
+
+                            <div class="v-form-group">
+                                <label>MESSAGE</label>
+                                <textarea id="contact-message" rows="4" placeholder="Tell us about your project..." required></textarea>
                             </div>
-                            <div class="form-group">
-                                <label for="contact-message">MESSAGE</label>
-                                <textarea id="contact-message" rows="6"
-                                    placeholder="Tell us about your project goals..." required></textarea>
+
+                            <div class="form-action-zone">
+                                <button type="submit" class="transmit-btn submit-btn magnetic">
+                                    <span>SEND MESSAGE</span>
+                                    <div class="btn-arrow">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                                            <polyline points="12 5 19 12 12 19"></polyline>
+                                        </svg>
+                                    </div>
+                                </button>
                             </div>
-                            <button type="submit" class="submit-btn group">
-                                <span class="btn-content">
-                                    SEND MESSAGE
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        class="arrow">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
-                                </span>
-                            </button>
                         </form>
                     </div>
                 </div>

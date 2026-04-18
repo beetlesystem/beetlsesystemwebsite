@@ -9,41 +9,53 @@ include '../includes/pageheader.php';
 
 <body class="inner-page">
     <div class="grain"></div>
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
 
     <?php include '../includes/loader.php'; ?>
     <?php include '../includes/navigation.php'; ?>
 
-    <main>
-        <section class="page-hero">
-            <div class="container">
-                <span class="subheading"><span>PORTFOLIO</span></span>
-                <h1 class="reveal-from-left">Visionary work for <br><span class="accent-text">Visionary Brands.</span></h1>
-            </div>
-        </section>
+    <!-- Page Curtain Reveal -->
+    <div class="page-curtain-top"></div>
+    <div class="page-curtain-bottom"></div>
 
-        <section class="section">
+    <main>
+        <!-- Asymmetrical Project Hero -->
+        <section class="section projects-asymmetric-section">
             <div class="container">
-                <div class="projects-grid-detailed">
+                <div class="projects-main-intro reveal-from-bottom">
+                    <span class="subheading"><span>OUR PORTFOLIO</span></span>
+                    <h1>Selected <br><span class="accent-text">Work.</span></h1>
+                   
+                </div>
+
+                <div class="projects-studio-grid">
                     <?php if (empty($projects)): ?>
-                        <div style="text-align:center; padding: 5rem; width:100%; opacity:0.5;">
-                            <h2>The Nebula is currently silent.</h2>
-                            <p>Check back soon for new architectural wonders.</p>
+                        <div class="nebula-silent">
+                            <h2>No projects found.</h2>
+                            <p>Check back soon.</p>
                         </div>
                     <?php else: ?>
                         <?php foreach ($projects as $project): ?>
-                            <div class="project-card-full reveal-from-bottom">
-                                <div class="project-visual">
-                                    <div class="img-reveal-wrapper">
-                                        <img src="<?php echo htmlspecialchars($project['image_url'] ?: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'); ?>" alt="<?php echo htmlspecialchars($project['title']); ?>">
-                                    </div>
+                            <div class="project-studio-card reveal-from-bottom">
+                                <div class="studio-media-frame">
+                                    <!-- IMAGE: Always visible -->
+                                    <img src="<?php echo htmlspecialchars($project['image_url'] ?: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'); ?>" 
+                                         alt="<?php echo htmlspecialchars($project['title']); ?>" 
+                                         class="studio-main-img">
+                                    
+                                    <!-- VIDEO OVERLAY: Appears on hover -->
+                                    <?php if (!empty($project['video_url'])): ?>
+                                        <div class="studio-video-overlay">
+                                            <video autoplay muted loop playsinline preload="auto" class="portfolio-video-studio">
+                                                <source src="<?php echo htmlspecialchars($project['video_url']); ?>" type="video/mp4">
+                                            </video>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
-                                <div class="project-details">
-                                    <span class="p-category"><?php echo htmlspecialchars($project['category'] ?? 'Design & Development'); ?></span>
-                                    <h2><?php echo htmlspecialchars($project['title']); ?></h2>
-                                    <p><?php echo htmlspecialchars($project['client'] ?? 'Independent Venture'); ?> · <?php echo htmlspecialchars($project['year'] ?? date('Y')); ?></p>
-                                    <a href="#" class="view-project-link">VIEW PROJECT <span>→</span></a>
+
+                                <div class="studio-card-info">
+                                    <span class="p-tag"><?php echo htmlspecialchars($project['category'] ?? 'Design & Development'); ?></span>
+                                    <h3><?php echo htmlspecialchars($project['title']); ?></h3>
+                                    <a href="#" class="view-link magnetic">VIEW PROJECT</a>
                                 </div>
                             </div>
                         <?php endforeach; ?>

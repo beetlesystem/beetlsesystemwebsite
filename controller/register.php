@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once '../core/auth_check.php';
 require_once '../core/db.php';
 
 $error = '';
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </form>
 
             <div style="margin-top: 2rem; text-align: center; font-size: 0.9rem; opacity: 0.6;">
-                Already have access? <a href="login" style="color: var(--text-primary); font-weight: 700; text-decoration: none;">Login instead</a>
+                Already have access? <a href="admin" style="color: var(--text-primary); font-weight: 700; text-decoration: none;">Login instead</a>
             </div>
         </div>
     </section>

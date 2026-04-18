@@ -77,7 +77,7 @@ if (empty($labels)) {
                 <div class="admin-user-avatar"><?php echo substr($_SESSION['full_name'], 0, 1); ?></div>
                 <div>
                     <strong style="display:block; font-size:0.9rem;"><?php echo $_SESSION['full_name']; ?></strong>
-                    <span style="font-size:0.75rem; color:#666;">Controller
+                    <span style="font-size:0.75rem; color:#666;">user
                         (<?php echo $_SESSION['admin_id']; ?>)</span>
                 </div>
             </div>
@@ -92,23 +92,23 @@ if (empty($labels)) {
             <div class="admin-stat-card">
                 <i class="fas fa-message" style="color:var(--accent);"></i>
                 <div class="admin-stat-value"><?php echo $pdo->query("SELECT COUNT(*) FROM contacts")->fetchColumn(); ?></div>
-                <div style="color:#666; font-size:0.85rem; font-weight:600;">Total Transmissions</div>
+                <div style="color:#666; font-size:0.85rem; font-weight:600;">Total Enquiries</div>
             </div>
             <div class="admin-stat-card">
                 <i class="fas fa-users" style="color:var(--accent);"></i>
                 <div class="admin-stat-value"><?php echo number_format($total_visitors); ?></div>
-                <div style="color:#666; font-size:0.85rem; font-weight:600;">Total Website Visitors</div>
+                <div style="color:#666; font-size:0.85rem; font-weight:600;">Total Visitors</div>
             </div>
             <div class="admin-stat-card">
                 <i class="fas fa-star" style="color:var(--accent);"></i>
                 <div class="admin-stat-value"><?php echo $satisfaction_index; ?></div>
-                <div style="color:#666; font-size:0.85rem; font-weight:600;">Satisfaction Index</div>
+                <div style="color:#666; font-size:0.85rem; font-weight:600;">Average Rating</div>
             </div>
         </div>
 
         <!-- Analytics -->
         <div class="admin-card">
-            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-heading);">Traffic Analytics</h3>
+            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-heading);">Website Traffic</h3>
             <div style="height: 250px; width: 100%;">
                 <canvas id="dashboardChart"></canvas>
             </div>
@@ -117,7 +117,7 @@ if (empty($labels)) {
         <div class="admin-grid-2">
             <!-- Testimonials -->
             <div class="admin-card">
-                <h3 style="margin-bottom: 1rem; font-family: var(--font-heading);">Ethereal Reviews</h3>
+                <h3 style="margin-bottom: 1rem; font-family: var(--font-heading);">Recent Reviews</h3>
                 <div class="minimal-list">
                     <?php if (empty($recent_reviews)): ?>
                         <p style="font-size: 0.8rem; opacity: 0.5;">No reviews yet.</p>
@@ -135,7 +135,7 @@ if (empty($labels)) {
 
             <!-- Inquiries -->
             <div class="admin-card">
-                <h3 style="margin-bottom: 1rem; font-family: var(--font-heading);">Incoming Signals</h3>
+                <h3 style="margin-bottom: 1rem; font-family: var(--font-heading);">Recent Enquiries</h3>
                 <div class="minimal-list">
                     <?php if (empty($recent_inquiries)): ?>
                         <p style="font-size: 0.8rem; opacity: 0.5;">No inquiries yet.</p>
@@ -146,7 +146,7 @@ if (empty($labels)) {
                                     <strong class="<?php echo $inquiry['status'] === 'new' ? 'new-indicator' : ''; ?>" style="<?php echo $inquiry['status'] === 'new' ? 'color:var(--accent); font-weight:800;' : ''; ?>">
                                         <?php echo htmlspecialchars($inquiry['name']); ?>
                                     </strong>
-                                    <span style="font-size:0.7rem; opacity:0.6;"><?php echo htmlspecialchars($inquiry['subject'] ?? 'Signal'); ?></span>
+                                    <span style="font-size:0.7rem; opacity:0.6;"><?php echo htmlspecialchars($inquiry['subject'] ?? 'Enquiry'); ?></span>
                                 </div>
                                 <span style="color:#666; font-size:0.75rem;"><?php echo date('M d', strtotime($inquiry['created_at'])); ?></span>
                             </div>
@@ -157,12 +157,16 @@ if (empty($labels)) {
         </div>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/lenis@latest/dist/lenis.min.js"></script>
+
     <script src="core/main.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const ctx = document.getElementById('dashboardChart');
             if (ctx) {
+                let chartStatus = Chart.getChart("dashboardChart");
+                if (chartStatus != undefined) {
+                    chartStatus.destroy();
+                }
                 new Chart(ctx, {
                     type: 'line',
                     data: {
@@ -201,7 +205,7 @@ if (empty($labels)) {
         });
 
         function viewInquiry(id) {
-            console.log('Redirecting to inquiry trace:', id);
+            console.log('Viewing enquiry details:', id);
             window.location.href = '/beetlesystem/controller/contacts/index.php?view_id=' + id;
         }
     </script>

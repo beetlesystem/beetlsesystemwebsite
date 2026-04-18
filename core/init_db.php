@@ -36,7 +36,6 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 
-    // Projects table
     $pdo->exec("CREATE TABLE IF NOT EXISTS projects (
         id INT AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(100) NOT NULL,
@@ -45,6 +44,9 @@ try {
         year INT,
         category VARCHAR(50),
         image_url VARCHAR(255),
+        video_url VARCHAR(255),
+        project_url VARCHAR(255),
+        is_featured TINYINT(1) DEFAULT 0,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )");
 

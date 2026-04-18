@@ -1,11 +1,27 @@
 <footer class="footer">
-    <div class="footer-cta">
-        <div class="container cta-container">
-            <div class="cta-content">
-                <h2 class="cta-title">HAVE A PROJECT IN MIND?<br><span>LET'S CREATE SOMETHING EXTRAORDINARY.</span>
-                </h2>
+    <div class="footer-cta-portal">
+        <!-- Spotlight Lens Effect -->
+        <div class="cta-spotlight" id="cta-spotlight"></div>
 
-                <a href="#" class="cta-btn contact-trigger">GET IN TOUCH</a>
+        <div class="cta-marquee-wrapper">
+            <div class="cta-marquee marquee-1">
+                <span>LET'S BUILD • LET'S BUILD • LET'S BUILD • LET'S BUILD • LET'S BUILD • </span>
+            </div>
+            <div class="cta-marquee marquee-2">
+                <span>EXTRAORDINARY • EXTRAORDINARY • EXTRAORDINARY • EXTRAORDINARY • </span>
+            </div>
+            <div class="cta-marquee marquee-3">
+                <span>DIGITAL FUTURE • DIGITAL FUTURE • DIGITAL FUTURE • DIGITAL FUTURE • </span>
+            </div>
+        </div>
+
+        <div class="container cta-container">
+            <div class="cta-content reveal-from-bottom">
+                <span class="cta-sub">READY TO START?</span>
+                <h2 class="cta-title">HAVE A PROJECT<br><span class="accent-text">IN MIND?</span></h2>
+                <div class="cta-action-box">
+                    <a href="view/contact" class="transmit-btn magnetic cta-btn contact-trigger">GET IN TOUCH</a>
+                </div>
             </div>
         </div>
     </div>

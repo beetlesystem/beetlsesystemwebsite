@@ -22,8 +22,10 @@ try {
 }
 
 header('Content-Type: application/json');
+require_once '../../core/csrf.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $name = trim($_POST['name'] ?? '');
     $email = trim($_POST['email'] ?? '');
     $phone = trim($_POST['phone'] ?? '');

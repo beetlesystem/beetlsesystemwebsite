@@ -3,23 +3,22 @@ require_once 'core/db.php';
 require_once 'core/track_visitor.php';
 trackVisitor($pdo, 'Home');
 
-$home_projects = $pdo->query("SELECT * FROM projects ORDER BY created_at DESC LIMIT 2")->fetchAll();
+$home_projects = $pdo->query("SELECT * FROM projects ORDER BY is_featured DESC, created_at DESC LIMIT 3")->fetchAll();
 $home_testimonials = $pdo->query("SELECT * FROM testimonials WHERE status = 'featured' ORDER BY created_at DESC LIMIT 6")->fetchAll();
 
 // Fetch CMS Settings
 $settings = $pdo->query("SELECT setting_key, setting_value FROM site_settings")->fetchAll(PDO::FETCH_KEY_PAIR);
 $about_image = $settings['about_image'] ?? 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=1200';
-$pk_starter = json_decode($settings['package_starter'] ?? '["Custom UI/UX Design","7 days Maintenance Support","Secure Hosting (HTTPS Enabled)","SEO-Friendly Structure"]', true);
-$pk_premium = json_decode($settings['package_premium'] ?? '["Dashboard-CMS/Admin Panel","Advanced SEO","Interactive Features","15 Days Maintenance Support"]', true);
-$pk_enterprise = json_decode($settings['package_enterprise'] ?? '["E-commerce Platforms","Custom CRM & Business Systems","Billing & Invoicing Automation","Scalable Web Applications"]', true);
+$pk_starter = array_unique(json_decode($settings['package_starter'] ?? '["Custom UI/UX Design","7 days Maintenance Support","Secure Hosting (HTTPS Enabled)","SEO-Friendly Structure"]', true));
+$pk_premium = array_unique(json_decode($settings['package_premium'] ?? '["Dashboard-CMS/Admin Panel","Advanced SEO","Interactive Features","15 Days Maintenance Support"]', true));
+$pk_enterprise = array_unique(json_decode($settings['package_enterprise'] ?? '["E-commerce Platforms","Custom CRM & Business Systems","Billing & Invoicing Automation","Scalable Web Applications"]', true));
 
 include 'includes/pageheader.php'; 
 ?>
 
 <body>
     <div class="grain"></div>
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
+
 
    <?php include 'includes/loader.php'; ?>
    <?php include 'includes/navigation.php'; ?>
@@ -33,10 +32,10 @@ include 'includes/pageheader.php';
                 <div class="hero-bg-content">
                     <div class="hero-cycle-wrapper" id="cycle-wrapper">
                         <div class="cycle-track" id="cycle-track">
-                            <h1 class="reveal-h1 cycle-phrase">CREATIVE<br>AGENCY</h1>
-                            <h1 class="reveal-h1 cycle-phrase">WEB<br>EXPERTS</h1>
-                            <h1 class="reveal-h1 cycle-phrase">SOFTWARE<br>SOLUTIONS</h1>
-                            <h1 class="reveal-h1 cycle-phrase">YOUR<br>PARTNER</h1>
+                            <h1 class="reveal-h1 cycle-phrase">CREATIVE<br><span style="color: var(--accent);">AGENCY</span></h1>
+                            <h1 class="reveal-h1 cycle-phrase">WEB<br><span style="color: var(--accent);">EXPERTS</span></h1>
+                            <h1 class="reveal-h1 cycle-phrase">SOFTWARE<br><span style="color: var(--accent);">SOLUTIONS</span></h1>
+                            <h1 class="reveal-h1 cycle-phrase">YOUR<br><span style="color: var(--accent);">PARTNER</span></h1>
                         </div>
                     </div>
                 </div>
@@ -163,7 +162,7 @@ include 'includes/pageheader.php';
         <section id="projects" class="section projects-section">
             <div class="container">
                 <div class="section-header">
-                    <span class="subheading"><span>04 / SELECTED WORKS</span></span>
+                    <span class="subheading"><span>05 / SELECTED WORKS</span></span>
                     <a href="projects" class="btn-text-arrow">
                         EXPLORE ARCHIVE
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -181,6 +180,13 @@ include 'includes/pageheader.php';
                                 <div class="project-img">
                                     <img src="<?php echo htmlspecialchars($hp['image_url'] ?: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426'); ?>"
                                         alt="<?php echo htmlspecialchars($hp['title']); ?>">
+                                    <?php if (!empty($hp['video_url'])): ?>
+                                        <div class="video-overlay">
+                                            <video autoplay muted loop playsinline preload="auto" class="hover-video">
+                                                <source src="<?php echo htmlspecialchars($hp['video_url']); ?>" type="video/mp4">
+                                            </video>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                                 <div class="project-info">
                                     <h3><?php echo htmlspecialchars($hp['title']); ?></h3>
@@ -196,7 +202,7 @@ include 'includes/pageheader.php';
         <!-- Pricing Section -->
         <section class="section pricing-section">
             <div class="container">
-                <span class="subheading"><span>05 / PACKAGES</span></span>
+                <span class="subheading"><span>06 / PACKAGES</span></span>
                 <div class="pricing-grid">
                     <div class="price-card">
                         <h3>Starter</h3>
@@ -245,7 +251,7 @@ include 'includes/pageheader.php';
         <!-- Testimonial Section -->
         <section class="section testimonial-section">
             <div class="container">
-                <span class="subheading"><span>06 / REVIEWS</span></span>
+                <span class="subheading"><span>07 / REVIEWS</span></span>
 
                 <div class="testimonial-slider">
                     <div class="testimonial-track" id="testimonial-track">
@@ -299,7 +305,7 @@ include 'includes/pageheader.php';
             <div class="container">
                 <div class="review-layout">
                     <div class="review-header reveal-from-left">
-                        <span class="subheading"><span>07 / YOUR VOICE</span></span>
+                        <span class="subheading"><span>08 / YOUR VOICE</span></span>
                         <h2><span>Help us grow with your valuable feedback.</span></h2>
                         <p class="review-intro">Your insights drive our creative evolution. Share your experience
                             working with Beetle System.</p>
@@ -352,14 +358,9 @@ include 'includes/pageheader.php';
                                     placeholder="Describe your experience with our services..." required></textarea>
                             </div>
 
-                            <button type="submit" class="submit-btn group">
+                            <button type="submit" class="transmit-btn submit-btn magnetic">
                                 <span class="btn-content">
                                     SUBMIT FEEDBACK
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        class="arrow">
-                                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                                        <polyline points="12 5 19 12 12 19"></polyline>
-                                    </svg>
                                 </span>
                             </button>
                         </form>
@@ -569,6 +570,7 @@ include 'includes/pageheader.php';
     <script>
         // CMS Orchestrated Data
         window.beetleCMS = {
+            csrfToken: '<?php require_once "core/csrf.php"; echo csrf_token_js(); ?>',
             starterFeatures: <?php echo json_encode($pk_starter); ?>,
             premiumFeatures: <?php echo json_encode($pk_premium); ?>,
             enterpriseFeatures: <?php echo json_encode($pk_enterprise); ?>

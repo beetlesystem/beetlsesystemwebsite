@@ -1,8 +1,10 @@
 <?php
 header('Content-Type: application/json');
 require_once '../../core/db.php';
+require_once '../../core/csrf.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    csrf_verify();
     $author = $_POST['author'] ?? '';
     $position = $_POST['position'] ?? '';
     $content = $_POST['content'] ?? '';

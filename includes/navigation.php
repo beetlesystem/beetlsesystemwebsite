@@ -1,6 +1,6 @@
 
     <nav id="navbar">
-        <div class="logo"><a href="./" style="text-decoration: none; color: inherit;">BEETLE SYSTEM</a></div>
+        <div class="logo"><a href="./" style="text-decoration: none; color: #000;">BEETLE SYSTEM</a></div>
 
         <div class="header-logo-center">
             <a href="admin" class="logo-circle-btn" aria-label="Go to login">

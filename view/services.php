@@ -2,88 +2,92 @@
 
 <body class="inner-page">
     <div class="grain"></div>
-    <div id="cursor"></div>
-    <div id="cursor-follower"></div>
 
     <?php include '../includes/loader.php'; ?>
     <?php include '../includes/navigation.php'; ?>
 
+    <!-- Page Curtain Reveal -->
+    <div class="page-curtain-top"></div>
+    <div class="page-curtain-bottom"></div>
+
     <main>
-        <section class="page-hero">
+        <!-- Modular Services Hero -->
+        <section class="section services-modern-hero">
             <div class="container">
-                <span class="subheading"><span>CAPABILITIES</span></span>
-                <h1 class="reveal-from-left">Digital craft that <br><span class="accent-text">Drives Results.</span></h1>
+                <div class="services-hero-branding reveal-from-bottom">
+                    <span class="subheading"><span>OUR EXPERTISE</span></span>
+                    <h1>Digital <br><span class="accent-text">Architecture.</span></h1>
+                    <p class="hero-lead">We combine surgical technical precision with visionary design to build digital products that define industries.</p>
+                </div>
+
+                <div class="blueprint-capabilities-grid">
+                    <div class="blueprint-card reveal-from-bottom magnetic">
+                        <div class="bp-icon"><i class="fas fa-bolt"></i></div>
+                        <div class="bp-content">
+                            <h3>High-Velocity <br>Engineering</h3>
+                            <p>Sub-second load times and optimized runtime performance across all digital touchpoints.</p>
+                        </div>
+                    </div>
+                    <div class="blueprint-card reveal-from-bottom delay-1 magnetic">
+                        <div class="bp-icon"><i class="fas fa-bezier-curve"></i></div>
+                        <div class="bp-content">
+                            <h3>Surgical UI/UX <br>Design</h3>
+                            <p>Interface architectures that prioritize intuitive human interaction and aesthetic clarity.</p>
+                        </div>
+                    </div>
+                    <div class="blueprint-card reveal-from-bottom delay-2 magnetic">
+                        <div class="bp-icon"><i class="fas fa-microchip"></i></div>
+                        <div class="bp-content">
+                            <h3>Scalable Cloud <br>Infrastructures</h3>
+                            <p>Resilient backend systems built to sustain exponential growth and complex data logic.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="section">
+        <section class="section service-stack-details">
             <div class="container">
-                <div class="services-list-detailed">
+                <div class="service-stack-grid">
                     <!-- Service 01 -->
-                    <div class="service-item-detail reveal-from-bottom">
-                        <div class="service-meta">
-                            <span class="service-index">01</span>
-                            <h2>UI/UX Design</h2>
-                        </div>
-                        <div class="service-desc">
-                            <p>We create beautiful, functional interfaces that prioritize the user journey. Our design philosophy combines minimalist aesthetics with intuitive navigation to reduce friction and increase engagement.</p>
-                            <ul class="feature-tags">
-                                <li>Interface Design</li>
-                                <li>User Research</li>
-                                <li>Prototyping</li>
-                                <li>Design Systems</li>
-                            </ul>
+                    <div class="stack-item reveal-from-bottom">
+                        <div class="stack-numeric">01</div>
+                        <div class="stack-info">
+                            <h2>Strategic Product <br>Design</h2>
+                            <p>We don't just design screens; we build ecosystems. Our process begins with deep user research and ends with a cohesive design system that scales with your ambition.</p>
+                            <div class="stack-tags">
+                                <span>Design Systems</span>
+                                <span>Interaction Design</span>
+                                <span>Prototyping</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Service 02 -->
-                    <div class="service-item-detail reveal-from-bottom">
-                        <div class="service-meta">
-                            <span class="service-index">02</span>
-                            <h2>Web Development</h2>
-                        </div>
-                        <div class="service-desc">
-                            <p>Building fast, responsive, and SEO-optimized websites using the latest technologies. We focus on clean code and performance to ensure your digital home is as robust as it is beautiful.</p>
-                            <ul class="feature-tags">
-                                <li>React / Next.js</li>
-                                <li>Performance Optimization</li>
-                                <li>Headless CMS</li>
-                                <li>Responsive Frameworks</li>
-                            </ul>
+                    <div class="stack-item reveal-from-bottom">
+                        <div class="stack-numeric">02</div>
+                        <div class="stack-info">
+                            <h2>Next-Gen Web <br>Development</h2>
+                            <p>Leveraging cutting-edge technologies like Next.js, headless CMS architectures, and global edge networks to deliver blazingly fast web experiences.</p>
+                            <div class="stack-tags">
+                                <span>Next.js / React</span>
+                                <span>Node.js</span>
+                                <span>Performance Audit</span>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Service 03 -->
-                    <div class="service-item-detail reveal-from-bottom">
-                        <div class="service-meta">
-                            <span class="service-index">03</span>
-                            <h2>SaaS Solutions</h2>
-                        </div>
-                        <div class="service-desc">
-                            <p>Developing scalable cloud-based applications that solve real-world business problems. From multi-tenant architectures to seamless API integrations, we build for growth.</p>
-                            <ul class="feature-tags">
-                                <li>Cloud Architecture</li>
-                                <li>Database Design</li>
-                                <li>Auth Systems</li>
-                                <li>Subscription Flows</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- Service 04 -->
-                    <div class="service-item-detail reveal-from-bottom">
-                        <div class="service-meta">
-                            <span class="service-index">04</span>
-                            <h2>Mobile Apps</h2>
-                        </div>
-                        <div class="service-desc">
-                            <p>Cross-platform mobile experiences that feel native. We build high-performance applications that keep your users connected on the go.</p>
-                            <ul class="feature-tags">
-                                <li>React Native</li>
-                                <li>iOS & Android</li>
-                                <li>App Store Optimization</li>
-                                <li>Biometric Auth</li>
-                            </ul>
+                    <div class="stack-item reveal-from-bottom">
+                        <div class="stack-numeric">03</div>
+                        <div class="stack-info">
+                            <h2>Full-Stack <br>App Solutions</h2>
+                            <p>From complex SaaS platforms to cross-platform mobile applications, we engineer solutions that bridge the gap between business goals and user needs.</p>
+                            <div class="stack-tags">
+                                <span>SaaS Architecture</span>
+                                <span>API Engineering</span>
+                                <span>Mobile (Native/Hybrid)</span>
+                            </div>
                         </div>
                     </div>
                 </div>
